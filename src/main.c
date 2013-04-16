@@ -24,7 +24,7 @@ int main(void) {
 	
 	//bgSetDisable(0);
 	
-	consoleDrawText(1, 4, "Errmagerrd");
+	consoleDrawText(1, 4, "Errmagerrd, text on BG3");
 	consoleDrawText(1, 1, "HP: %d ", player1->health);
 	consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
 	

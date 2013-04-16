@@ -78,7 +78,7 @@ static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
 void dummyLoad(){
 	consoleInit();
 
-	//consoleInitText(0, 1, &snesfont);
+	consoleInitText(2, 0, &snesfont);
 
 	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 
@@ -88,6 +88,11 @@ void dummyLoad(){
 	BG_Load(BG_P2_HW_LAYER, &TestBg2, BG_TILE_ADDR2, BG_MAP_ADDR2);
 
 	setMode(BG_MODE1, 0);
-
+	
+	setMode(BG_MODE1,BG3_MODE1_PRORITY_HIGH); //bgSetDisable(1);  
+	
+	// Set BG3 SubScreen and 
+	bgSetEnableSub(2);
+	
 	setBrightness(0xF);
 }
