@@ -47,6 +47,6 @@ typedef struct {
 
 extern void BG_Draw(u16 x, u16 y, u8 wd, u8 ht, BGPos_s *bg);
 extern u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg);
-extern void BG_Load(static Gfx_s *lvlmap);
+extern void BG_Load(u8 hwLayer, static Gfx_s *lvlmap);
 
 void dummyLoad();

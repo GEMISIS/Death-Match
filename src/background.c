@@ -27,33 +27,17 @@ u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg)
 }
 
 /*
-Setting up our own background system.
-Hopefully we should be able to draw both players screens
-on one background layer. This means we won't be able to
-use hardware scrolling which may be hard to implement
-software wise, especially since we can't scroll individual tiles
-unless in mode 5 and7 or something.
+Default background load. Pretty basic for now
 */
-void BG_Load(static Gfx_s *lvlmap)
+void BG_Load(u8 hwLayer, static Gfx_s *lvlmap)
 {
 	//initialize background tiles
-	bgInitTileSet(BG_P1_HW_LAYER, lvlmap->gfx, lvlmap->pal, 0,
+	bgInitTileSet(hwLayer, lvlmap->gfx, lvlmap->pal, 0,
 				  lvlmap->gfxSize, 16*2,
 				  BG_16COLORS, BG_TILE_ADDR1);
 
-	/*bgInitTileSet(BG_P2_HW_LAYER, &map->gfx, &map->pal, 0,
-				 (&map->gfxEnd - &map->gfx), 16*2,
-				  BG_16COLORS, BG_TILE_ADDR2);*/
-
-
-	bgInitMapSet(BG_P1_HW_LAYER, lvlmap->map,
+	bgInitMapSet(hwLayer, lvlmap->map,
 				 lvlmap->mapSize, SC_32x32, BG_MAP_ADDR1);
-
-	/*bgInitMapSet(BG_P2_HW_LAYER, &map->map,
-				 (&map->mapEnd - &map->map), SC_32x32, BG_MAP_ADDR2);*/
-
-
-	//setup windows here
 }
 
 
@@ -84,7 +68,7 @@ void dummyLoad(){
 
 
 	setLevel(&TestLevel, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end);
-	BG_Load(&TestLevel);
+	BG_Load(BG_P1_HW_LAYER, &TestLevel);
 
 	setMode(BG_MODE1, 0);
 
