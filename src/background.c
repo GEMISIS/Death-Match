@@ -27,17 +27,33 @@ u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg)
 }
 
 /*
-Default background load. Pretty basic for now
+Setting up our own background system.
+Hopefully we should be able to draw both players screens
+on one background layer. This means we won't be able to
+use hardware scrolling which may be hard to implement
+software wise, especially since we can't scroll individual tiles
+unless in mode 5 and7 or something.
 */
-void BG_Load(u8 hwLayer, static Gfx_s *lvlmap)
+void BG_Load( u8 BG_HW_LAYER, static Gfx_s *lvlmap, u16 BG_TILE_ADDR, u16 BG_MAP_ADDR)
 {
 	//initialize background tiles
-	bgInitTileSet(hwLayer, lvlmap->gfx, lvlmap->pal, 0,
+	bgInitTileSet(BG_HW_LAYER, lvlmap->gfx, lvlmap->pal, 0,
 				  lvlmap->gfxSize, 16*2,
-				  BG_16COLORS, BG_TILE_ADDR1);
+				  BG_16COLORS, BG_TILE_ADDR);
 
-	bgInitMapSet(hwLayer, lvlmap->map,
-				 lvlmap->mapSize, SC_32x32, BG_MAP_ADDR1);
+	/*bgInitTileSet(BG_P2_HW_LAYER, &map->gfx, &map->pal, 0,
+				 (&map->gfxEnd - &map->gfx), 16*2,
+				  BG_16COLORS, BG_TILE_ADDR2);*/
+
+
+	bgInitMapSet(BG_HW_LAYER, lvlmap->map,
+				 lvlmap->mapSize, SC_32x32, BG_MAP_ADDR);
+
+	/*bgInitMapSet(BG_P2_HW_LAYER, &map->map,
+				 (&map->mapEnd - &map->map), SC_32x32, BG_MAP_ADDR2);*/
+
+
+	//setup windows here
 }
 
 
@@ -46,7 +62,7 @@ void BG_Load(u8 hwLayer, static Gfx_s *lvlmap)
 //==================================================
 //Test stuff
 //==================================================
-static Gfx_s TestLevel;
+static Gfx_s TestBg1, TestBg2;
 
 static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
 	char *pal, char *pale, char *map, char *mape)
@@ -62,13 +78,14 @@ static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
 void dummyLoad(){
 	consoleInit();
 
-	consoleInitText(0, 1, &snesfont);
+	//consoleInitText(0, 1, &snesfont);
 
-	consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
+	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 
-
-	setLevel(&TestLevel, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end);
-	BG_Load(BG_P1_HW_LAYER, &TestLevel);
+	setLevel(&TestBg1, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end);
+	setLevel(&TestBg2, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end);
+	BG_Load(BG_P1_HW_LAYER, &TestBg1, BG_TILE_ADDR1, BG_MAP_ADDR1);
+	BG_Load(BG_P2_HW_LAYER, &TestBg2, BG_TILE_ADDR2, BG_MAP_ADDR2);
 
 	setMode(BG_MODE1, 0);
 

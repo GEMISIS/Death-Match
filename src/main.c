@@ -22,13 +22,13 @@ int main(void) {
 	
 	dummyLoad();
 	
-	bgSetDisable(2);
+	//bgSetDisable(0);
 	
 	consoleDrawText(1, 4, "Errmagerrd");
 	consoleDrawText(1, 1, "HP: %d ", player1->health);
 	consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
 	
-	bgSetScroll(1, player1->x, player1->y);
+	bgSetScroll(0, player1->x, player1->y);
 	
 	setFadeEffect(2);
 	
@@ -84,7 +84,7 @@ int main(void) {
 			proccessInput(pad1, player2);
 		}*/
 		WaitForVBlank();
-		bgSetScroll(1, player1->x, player1->y);
+		bgSetScroll(0, player1->x, player1->y);
 		
 		//WaitForVBlank();
 	}
