@@ -1,2 +1,10 @@
 Death-Match
 ===========
+
+local.mk template:
+
+	# path to snesdev root directory (for emulators, devkitsnes, PVSNESLIB)
+	export DEVKITSNES := /opt/SnesDev
+
+	# path to devkitsnes root directory for compiler
+	export DEVKIT65XX := $(DEVKITSNES)/devkitsnes
