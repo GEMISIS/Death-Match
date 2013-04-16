@@ -1,0 +1,6 @@
+-Split screen background drawing
+-Player movement 4 way with straffing button
+-Multilayered levels
+-Vehicles
+-Guns on tiles
+-Character palette based health system.
