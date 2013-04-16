@@ -4,3 +4,11 @@
 -Vehicles
 -Guns on tiles
 -Character palette based health system.
+-Weapon classes:
+	16 bit integer using weapon flags
+		12 equipable and 4 mounted weapons per level (mounted == vehicle and other)
+	ammo division:
+		heavy weapons: 4 bits = 15 max ammo
+		medium: 8 bits, 128 max, extra bit for something useful
+		light: 8 bits, 256, no extra bit
+
