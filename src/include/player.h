@@ -4,8 +4,8 @@
 
 typedef struct{
 	u16 x, y;
-	u8 direction;
 	u8 health;
+	u8 direction;
 	u8 weapon;
 }Player_s;
 

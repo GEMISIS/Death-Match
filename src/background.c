@@ -33,9 +33,9 @@ void dummyLoad(){
 	
 	consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 	
-	bgInitTileSet(1, &patterns, &palette, 0, (&patterns_end - &patterns), 16*2, BG_16COLORS, 0x2000);//HACKY!!! don't use
-	//bgSetMapPtr(1, 0x1000, SC_64x32);
-	bgInitMapSet(1, &map, (&map_end - &map), SC_32x32, 0x1000);//HACKY!!! don't use
+	bgInitTileSet(1, &patterns, &palette, 0, (&patterns_end - &patterns), 16*2, BG_16COLORS, 0x5000);//HACKY!!! don't use
+	//bgSetMapPtr(1, 0x3000, SC_32x32);
+	bgInitMapSet(1, &map, (&map_end - &map), SC_32x32, 0x4000);//HACKY!!! don't use
 	
 	setMode(BG_MODE1, 0);
 	
