@@ -2,10 +2,7 @@
 
 #include <snes.h>
 
-u16 pad0, pad1;
+#include "background.h"
+#include "input.h"
+#include "player.h"
 
-typedef struct{
-	u8 some;
-	u8 test;
-	u16 data;
-}Player_s;
