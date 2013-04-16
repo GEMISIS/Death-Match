@@ -66,7 +66,11 @@ palibfont.pic: palibfont.bmp
 	@echo convert font with no tile reduction ... $(notdir $@)
 	$(GFXCONV) -n -gs8 -po2 -pc16 -pe1 -mR! -m! -p! $<
 
-bitmaps : lvl1.pic palibfont.pic
+sprite.pic: sprite.bmp
+	@echo convert bitmap ... $(notdir $@)
+	$(GFXCONV) -gs32 -pc16 -po16 -n $<
+
+bitmaps : lvl1.pic palibfont.pic sprite.pic
 
 #---------------------------------------------------------------------------------
 $(OUTPUT).sfc	: $(OFILES)

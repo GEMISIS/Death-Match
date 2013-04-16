@@ -20,6 +20,9 @@ int main(void) {
 	
 	players = 0;
 	
+	consoleInit();
+	
+	dummySprites();
 	dummyLoad();
 	
 	//bgSetDisable(0);
@@ -33,7 +36,7 @@ int main(void) {
 	setFadeEffect(2);
 	
 	WaitForVBlank();
-	
+	//setModeHdmaGradient(31);
 	while(1) {
 		
 		
@@ -85,6 +88,7 @@ int main(void) {
 		}*/
 		WaitForVBlank();
 		bgSetScroll(0, player1->x, player1->y);
+		bgSetScroll(1, player1->x|0xF, player1->y|0xF);
 		
 		//WaitForVBlank();
 	}

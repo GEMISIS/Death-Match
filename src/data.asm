@@ -18,4 +18,16 @@ snesfont:
 .incbin "palibfont.pic"
 snesfont_end:
 
+;.ends
+
+;.section ".rodata2" superfree
+
+gfxsprite:
+.incbin "sprite.pic"
+gfxsprite_end:
+
+palsprite:
+.incbin "sprite.pal"
+;palsprite_end:
+
 .ends
