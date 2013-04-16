@@ -34,11 +34,11 @@ use hardware scrolling which may be hard to implement
 software wise, especially since we can't scroll individual tiles
 unless in mode 5 and7 or something.
 */
-void BG_Load(Gfx_s *map)
+void BG_Load(static Gfx_s *lvlmap)
 {
 	//initialize background tiles
-	bgInitTileSet(BG_P1_HW_LAYER, &map->gfx, &map->pal, 0,
-				 (&map->gfxEnd - &map->gfx), 16*2,
+	bgInitTileSet(BG_P1_HW_LAYER, lvlmap->gfx, lvlmap->pal, 0,
+				  lvlmap->gfxSize, 16*2,
 				  BG_16COLORS, BG_TILE_ADDR1);
 
 	/*bgInitTileSet(BG_P2_HW_LAYER, &map->gfx, &map->pal, 0,
@@ -46,8 +46,8 @@ void BG_Load(Gfx_s *map)
 				  BG_16COLORS, BG_TILE_ADDR2);*/
 
 
-	bgInitMapSet(BG_P1_HW_LAYER, &map->map,
-				 (&map->mapEnd - &map->map), SC_32x32, BG_MAP_ADDR1);
+	bgInitMapSet(BG_P1_HW_LAYER, lvlmap->map,
+				 lvlmap->mapSize, SC_32x32, BG_MAP_ADDR1);
 
 	/*bgInitMapSet(BG_P2_HW_LAYER, &map->map,
 				 (&map->mapEnd - &map->map), SC_32x32, BG_MAP_ADDR2);*/
@@ -56,17 +56,23 @@ void BG_Load(Gfx_s *map)
 	//setup windows here
 }
 
+
+
+
+//==================================================
+//Test stuff
+//==================================================
 static Gfx_s TestLevel;
 
-static void setLevel(Gfx_s *lh, char gfx, char gfxe,
-	char pal, char pale, char map, char mape)
+static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
+	char *pal, char *pale, char *map, char *mape)
 {
 	lh->gfx = gfx;
-	lh->gfxEnd = gfxe;
+	lh->gfxSize = (gfxe - gfx);
 	lh->pal = pal;
-	lh->palEnd = pale;
+	lh->palSize = (pale - pal);
 	lh->map = map;
-	lh->mapEnd = mape;
+	lh->mapSize = (mape - map);
 }
 
 void dummyLoad(){
@@ -76,11 +82,8 @@ void dummyLoad(){
 
 	consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 
-	/*bgInitTileSet(1, &patterns, &palette, 0, (&patterns_end - &patterns), 16*2, BG_16COLORS, 0x5000);//HACKY!!! don't use
-	//bgSetMapPtr(1, 0x3000, SC_32x32);
-	bgInitMapSet(1, &map, (&map_end - &map), SC_32x32, 0x4000);//HACKY!!! don't use*/
 
-	setLevel(&TestLevel, patterns, patterns_end, palette, palette_end, map, map_end);
+	setLevel(&TestLevel, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end);
 	BG_Load(&TestLevel);
 
 	setMode(BG_MODE1, 0);

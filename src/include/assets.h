@@ -8,6 +8,7 @@ extern char snesfont;
 
 
 typedef struct {
-	char gfx, gfxEnd, pal, palEnd, map, mapEnd;
+	char *gfx, *pal, *map;
+	u16 gfxSize, palSize, mapSize;
 }Gfx_s;
 
