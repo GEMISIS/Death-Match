@@ -8,3 +8,61 @@ local.mk template:
 
 	# path to devkitsnes root directory for compiler
 	export DEVKIT65XX := $(DEVKITSNES)/devkitsnes
+
+Code Style:
+
+	Variable declarations: u8, u16, s8, s16, u32, s32 yourVar
+	Struct declarations  : struct Player_s { }; Player_s YourPlayer
+	Const / macros       : const u32 VARIABLE_ALL_CAPS
+						   #define YOUR_SHIT poop
+
+	function declarations:
+		unless specifically called in other source files, functions should be
+		declared as static. i.e.
+
+			static void yourFunction(){}
+
+		Static functions are local to its residing file and will begin with lower case letters.
+
+		Functions that are called outside of its residing file should begin with a capital letter. i.e.
+			void PlayerUpdate() {}
+
+	Bracket style:
+		functions:
+			void yourFunction()
+			{
+				printf("stuff");
+			}
+
+		long if statements
+			if ()
+			{
+
+			}
+
+		one liner if statements:
+			if () {
+
+			}
+
+
+	Things to avoid:
+		-extensive pointer use
+		-division (1)
+		-multiplication (1)
+		-32 bit integers (2)
+		-float variables (3)
+		-signed integers
+		-arrays
+		-lots of local variables
+		-passing large numbers of parameters to functions (4)
+
+		Notes:
+		(1) Use bitshifting if possible (mult: <<, div: >>)
+		(2) Snes CPU is 16 bit native
+		(3) Fixed point math only!
+		(4) Pass addresses of large data types, or hardcode function data access if possible
+
+
+	Further tips:
+		http://www.portabledev.com/wiki/doku.php?id=bug_tcc_en
