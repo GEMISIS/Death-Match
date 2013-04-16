@@ -40,22 +40,11 @@ void BG_Load( u8 BG_HW_LAYER, static Gfx_s *lvlmap, u16 BG_TILE_ADDR, u16 BG_MAP
 {
 	//initialize background tiles
 	bgInitTileSet(BG_HW_LAYER, lvlmap->gfx, lvlmap->pal, 0,
-				  lvlmap->gfxSize, 16*2,
+				  lvlmap->gfxSize, lvlmap->palSize,
 				  BG_16COLORS, BG_TILE_ADDR);
 
-	/*bgInitTileSet(BG_P2_HW_LAYER, &map->gfx, &map->pal, 0,
-				 (&map->gfxEnd - &map->gfx), 16*2,
-				  BG_16COLORS, BG_TILE_ADDR2);*/
-
-
 	bgInitMapSet(BG_HW_LAYER, lvlmap->map,
-				 lvlmap->mapSize, SC_32x32, BG_MAP_ADDR);
-
-	/*bgInitMapSet(BG_P2_HW_LAYER, &map->map,
-				 (&map->mapEnd - &map->map), SC_32x32, BG_MAP_ADDR2);*/
-
-
-	//setup windows here
+				 lvlmap->mapSize, lvlmap->tile, BG_MAP_ADDR);
 }
 
 
@@ -122,7 +111,7 @@ void bgSetWindowsRegions_fix(u8 bgNumber, u8 winNumber, u8 xLeft, u8 xRight) {
 static Gfx_s TestBg1, TestBg2;
 
 static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
-	char *pal, char *pale, char *map, char *mape)
+	char *pal, char *pale, char *map, char *mape, u8 tileMode)
 {
 	lh->gfx = gfx;
 	lh->gfxSize = (gfxe - gfx);
@@ -130,6 +119,7 @@ static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
 	lh->palSize = (pale - pal);
 	lh->map = map;
 	lh->mapSize = (mape - map);
+	lh->tile = tileMode;
 }
 
 void dummyLoad(){
@@ -139,8 +129,8 @@ void dummyLoad(){
 
 	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 
-	setLevel(&TestBg1, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end);
-	setLevel(&TestBg2, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end);
+	setLevel(&TestBg1, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end, SC_32x32);
+	setLevel(&TestBg2, &lvl2gfx, &lvl2gfx_end, &lvl2pal, &lvl2pal_end, &lvl2map, &lvl2map_end, SC_64x64);
 	BG_Load(BG_P1_HW_LAYER, &TestBg1, BG_TILE_ADDR1, BG_MAP_ADDR1);
 	BG_Load(BG_P2_HW_LAYER, &TestBg2, BG_TILE_ADDR2, BG_MAP_ADDR2);
 
@@ -160,6 +150,8 @@ void dummyLoad(){
     REG_WH2 = 0x80;
     REG_WH3 = 0xF0;
 
+    //these probably select what objects can be seen in each window
+    //haven't figured this out yet
 	REG_WOBJSEL = 0x03;
 
     REG_WBGLOG = 0x01;
@@ -167,7 +159,6 @@ void dummyLoad(){
 
     //enable windowing for bg's 1 and 2
     REG_TMW = 0x03;
-
 
 	// Set BG3 SubScreen and
 	bgSetEnableSub(2);

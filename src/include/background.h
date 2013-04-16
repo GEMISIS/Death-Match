@@ -44,8 +44,6 @@ typedef struct {
 	Level_s *curLevel;
 }BGPos_s;
 
-extern static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
-	char *pal, char *pale, char *map, char *mape);
 extern void BG_Draw(u16 x, u16 y, u8 wd, u8 ht, BGPos_s *bg);
 extern u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg);
 extern void BG_Load(u8 BG_HW_LAYER, static Gfx_s *lvlmap, u16 BG_TILE_ADDR, u16 BG_MAP_ADDR);

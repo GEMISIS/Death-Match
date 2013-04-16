@@ -70,7 +70,7 @@ sprite.pic: sprite.bmp
 	@echo convert bitmap ... $(notdir $@)
 	$(GFXCONV) -gs32 -pc16 -po16 -n $<
 
-bitmaps : lvl1.pic palibfont.pic sprite.pic
+bitmaps : lvl1.pic lvl2.pic palibfont.pic sprite.pic
 
 #---------------------------------------------------------------------------------
 $(OUTPUT).sfc	: $(OFILES)
