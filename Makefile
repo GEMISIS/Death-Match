@@ -1,5 +1,5 @@
 #set path to snesdev root and devkitsnes
-include $(CURDIR)/../local.mk
+include $(CURDIR)/local.mk
 
 #---------------------------------------------------------------------------------
 .SUFFIXES:
@@ -19,6 +19,7 @@ include $(DEVKIT65XX)/snes_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(shell basename $(CURDIR))
 SOURCES		:=	.
+INCLUDES	:=	include
 
 #---------------------------------------------------------------------------------
 # options for code generation
