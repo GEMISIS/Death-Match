@@ -91,7 +91,7 @@ void dummyLoad(){
 	
 	setMode(BG_MODE1,BG3_MODE1_PRORITY_HIGH); //bgSetDisable(1);  
 	
-	//bgSetWindowsRegions(BG_P2_HW_LAYER, BG_P2_HW_LAYER, 0x80, 0xFF);
+	bgSetWindowsRegions(BG_P1_HW_LAYER, BG_P1_HW_LAYER, 0x00, 0x80);
 	
 	// Set BG3 SubScreen and 
 	bgSetEnableSub(2);
