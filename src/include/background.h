@@ -5,24 +5,12 @@
 
 
 #define BG_TILE_ADDR1 0x5000
-#define BG_TILE_ADDR2 0x4000
-#define BG_MAP_ADDR1  0x1400
-#define BG_MAP_ADDR2  0x1800
+//#define BG_TILE_ADDR2 0x4000
+#define BG_MAP_ADDR1  0x4000
+//#define BG_MAP_ADDR2  0x1800
 //snes hardware layer the level will be drawn too
-#define BG_P1_HW_LAYER 3
+#define BG_P1_HW_LAYER 1
 #define BG_P2_HW_LAYER 2
-
-/*
-declare backgrounds here:
-*/
-typedef struct {
-	char gfx, gfxEnd, pal, map, mapEnd;
-}Map_s;
-
-//e.g.
-//extern char mapgfx, mapgfx_end, mapgfx_pal;
-//const Map_s groundMap {mapgfx, mapgfx_end, mapgfx_pal };
-
 
 //map layers
 enum { LAYER_GROUND, LAYER_SKY, LAYER_SPACE, LAYER_WATER };
@@ -37,16 +25,8 @@ typedef struct {
 
 	//points to the current map in use for the level
 	//and its 4 layers
-	Map_s *map[4];
+	Gfx_s *map[4];
 }Level_s;
-
-
-/*
-Preparing Levels:
-use const types to store in rom
-*/
-//const Level_s Level1 = {width, height, [&groundMap, &skyMap, &spaceMap, &waterMap]};
-
 
 /*
 Players background struct. Each player will have
@@ -67,5 +47,6 @@ typedef struct {
 
 extern void BG_Draw(u16 x, u16 y, u8 wd, u8 ht, BGPos_s *bg);
 extern u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg);
+extern void BG_Load(Gfx_s *map);
 
 void dummyLoad();

@@ -1,7 +1,7 @@
 #include "background.h"
 
 //Grab the current layer the player is on
-static Map_s *bgGetLayer(BGPos_s *bg)
+static Gfx_s *bgGetLayer(BGPos_s *bg)
 {
 	return bg->curLevel->map[bg->layer];
 }
@@ -20,7 +20,7 @@ void BG_Draw(u16 x, u16 y, u8 wd, u8 ht, BGPos_s *bg)
 //each tile is 8x8 pixels, hence the >>3
 u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg)
 {
-	Map_s *layer = bgGetLayer(bg);
+	Gfx_s *layer = bgGetLayer(bg);
 	u16 lvlWd = (bg->curLevel->width)>>3;
 	u16 *ptr = (u16 *) &layer->map + (yPix>>3)*lvlWd + (xPix>>3);
 	return (*ptr);
@@ -34,27 +34,40 @@ use hardware scrolling which may be hard to implement
 software wise, especially since we can't scroll individual tiles
 unless in mode 5 and7 or something.
 */
-void BG_Load(Map_s *map, u16 bgWidth)
+void BG_Load(Gfx_s *map)
 {
 	//initialize background tiles
 	bgInitTileSet(BG_P1_HW_LAYER, &map->gfx, &map->pal, 0,
 				 (&map->gfxEnd - &map->gfx), 16*2,
 				  BG_16COLORS, BG_TILE_ADDR1);
 
-	bgInitTileSet(BG_P2_HW_LAYER, &map->gfx, &map->pal, 0,
+	/*bgInitTileSet(BG_P2_HW_LAYER, &map->gfx, &map->pal, 0,
 				 (&map->gfxEnd - &map->gfx), 16*2,
-				  BG_16COLORS, BG_TILE_ADDR2);
+				  BG_16COLORS, BG_TILE_ADDR2);*/
 
 
 	bgInitMapSet(BG_P1_HW_LAYER, &map->map,
 				 (&map->mapEnd - &map->map), SC_32x32, BG_MAP_ADDR1);
 
-	bgInitMapSet(BG_P2_HW_LAYER, &map->map,
-				 (&map->mapEnd - &map->map), SC_32x32, BG_MAP_ADDR2)
+	/*bgInitMapSet(BG_P2_HW_LAYER, &map->map,
+				 (&map->mapEnd - &map->map), SC_32x32, BG_MAP_ADDR2);*/
+
 
 	//setup windows here
 }
 
+static Gfx_s TestLevel;
+
+static void setLevel(Gfx_s *lh, char gfx, char gfxe,
+	char pal, char pale, char map, char mape)
+{
+	lh->gfx = gfx;
+	lh->gfxEnd = gfxe;
+	lh->pal = pal;
+	lh->palEnd = pale;
+	lh->map = map;
+	lh->mapEnd = mape;
+}
 
 void dummyLoad(){
 	consoleInit();
@@ -63,9 +76,12 @@ void dummyLoad(){
 
 	consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 
-	bgInitTileSet(1, &patterns, &palette, 0, (&patterns_end - &patterns), 16*2, BG_16COLORS, 0x5000);//HACKY!!! don't use
+	/*bgInitTileSet(1, &patterns, &palette, 0, (&patterns_end - &patterns), 16*2, BG_16COLORS, 0x5000);//HACKY!!! don't use
 	//bgSetMapPtr(1, 0x3000, SC_32x32);
-	bgInitMapSet(1, &map, (&map_end - &map), SC_32x32, 0x4000);//HACKY!!! don't use
+	bgInitMapSet(1, &map, (&map_end - &map), SC_32x32, 0x4000);//HACKY!!! don't use*/
+
+	setLevel(&TestLevel, patterns, patterns_end, palette, palette_end, map, map_end);
+	BG_Load(&TestLevel);
 
 	setMode(BG_MODE1, 0);
 
