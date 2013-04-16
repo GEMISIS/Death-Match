@@ -15,7 +15,7 @@ typedef struct {
 
 
 //map layers
-enum {LAYER_GROUND, LAYER_SKY, LAYER_SPACE, LAYER_WATER};
+enum { LAYER_GROUND, LAYER_SKY, LAYER_SPACE, LAYER_WATER };
 
 /*Background struct
 	An instance of this struct will be required for
@@ -32,15 +32,16 @@ typedef struct {
 
 
 /*
-Storing backgrounds
+Preparing Levels:
 use const types to store in rom
 */
-//const Background_s Level1 = {0, 0, 0, width, height, [&groundMap, &skyMap, &spaceMap, &waterMap]};
+//const Level_s Level1 = {width, height, [&groundMap, &skyMap, &spaceMap, &waterMap]};
 
 
 /*
-Players background struct
-
+Players background struct. Each player will have
+one of these to keep track of their location on
+the background, for proper screen drawing/collision
 */
 typedef struct {
 	//current map layer of player
@@ -53,3 +54,6 @@ typedef struct {
 	Level_s *curLevel;
 }BGPos_s;
 
+
+extern void BG_Draw(u16 x, u16 y, u8 wd, u8 ht, BGPos_s *bg);
+extern u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg);
