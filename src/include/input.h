@@ -1,4 +1,8 @@
 #pragma once
 
-//TODO: Input functions
-u16 pad0, pad1;
+#include <snes.h>
+#include "player.h"
+
+static u16 pad0, pad1;
+
+void proccessInput(u16 pad); //Process input for pad, update player

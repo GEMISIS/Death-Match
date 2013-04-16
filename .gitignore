@@ -7,7 +7,8 @@
 *.map
 *.pc7
 *.mp7
-
+*.pnproj
+*.pnps
 
 .DS_Store
 .DS_Store?

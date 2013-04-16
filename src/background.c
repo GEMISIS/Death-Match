@@ -1,4 +1,3 @@
-#include <snes.h>
 #include "background.h"
 
 //Grab the current layer the player is on
@@ -25,4 +24,20 @@ u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg)
 	u16 lvlWd = (bg->curLevel->width)>>3;
 	u16 *ptr = (u16 *) &layer->gfx + (yPix>>3)*lvlWd + (xPix>>3);
 	return (*ptr);
+}
+
+void dummyLoad(){
+	consoleInit();
+	
+	consoleInitText(0, 1, &snesfont);
+	
+	consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
+	
+	bgInitTileSet(1, &patterns, &palette, 0, (&patterns_end - &patterns), 16*2, BG_16COLORS, 0x2000);//HACKY!!! don't use
+	//bgSetMapPtr(1, 0x1000, SC_64x32);
+	bgInitMapSet(1, &map, (&map_end - &map), SC_32x32, 0x1000);//HACKY!!! don't use
+	
+	setMode(BG_MODE1, 0);
+	
+	setBrightness(0xF);
 }

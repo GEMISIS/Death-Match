@@ -1,6 +1,8 @@
 #pragma once
 
 #include <snes.h>
+#include "assets.h"
+
 
 /*
 declare backgrounds here:
@@ -57,3 +59,5 @@ typedef struct {
 
 extern void BG_Draw(u16 x, u16 y, u8 wd, u8 ht, BGPos_s *bg);
 extern u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg);
+
+void dummyLoad();

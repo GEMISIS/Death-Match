@@ -8,26 +8,34 @@
 ---------------------------------------------------------------------------------*/
 #include "main.h"
 
-extern char patterns, patterns_end;
-extern char palette, palette_end;
-extern char map, map_end;
 
 //---------------------------------------------------------------------------------
 int main(void) {
-	static u16 x = 0, y = 0; //HACKY!!! don't use
-	consoleInit();
+	//static u16 x = 0, y = 0;
+	Player_s player1;//, player2;
 	
-	bgInitTileSet(0, &patterns, &palette, 0, (&patterns_end - &patterns), 16*2, BG_16COLORS, 0x1000);//HACKY!!! don't use
+	player1.x = 0;
+	player1.y = 0;
+	player1.health = 100;
 	
-	bgInitMapSet(0, &map, (&map_end - &map), SC_32x32, 0x0000);//HACKY!!! don't use
+	players = 0;
 	
-	setMode(BG_MODE1, 0);
-	//bgSetDisable(1);
+	dummyLoad();
+	
 	//bgSetDisable(2);
+	consoleDrawText(1, 4, "Errmagerrd");
 	
-	setBrightness(0xF);
+	setFadeEffect(2);
+	
+	WaitForVBlank();
 	
 	while(1) {
+		consoleDrawText(1, 1, "HP: %d ", player1.health);
+		consoleDrawText(1, 22, "X = %d Y = %d ", player1.x, player1.y);
+		
+		WaitVBLFlag;
+		//WaitForVBlank();
+		consoleSetTextCol(RGB15(31&player1.x,31&player1.y,4), RGB15(0,0,0));
 		
 		scanPads();
 		
@@ -35,25 +43,32 @@ int main(void) {
 		
 		if(pad0){
 			if(pad0 & (KEY_A | KEY_X)){
-			
+				player1.health < 254 ? ++player1.health : player1.health = 255;
 			}else if(pad0 & (KEY_B | KEY_Y)){
-			
+				player1.health > 0 ? --player1.health : player1.health = 0;
 			}
-			
+		
 			if(pad0 & KEY_RIGHT){
-				++x;
+				++player1.x;
 			}else if(pad0 & KEY_LEFT){
-				--x;
+				--player1.x;
 			}
-			
+		
 			if(pad0 & KEY_UP){
-				--y;
+				--player1.y;
 			}else if(pad0 & KEY_DOWN){
-				++y;
+				++player1.y;
 			}
 		}
-		bgSetScroll(0, x, y);
-		WaitForVBlank();
+		
+		/*if(players==1){
+			pads1 = padsCurrent(1);
+			proccessInput(pad1, player2);
+		}*/
+		
+		bgSetScroll(1, player1.x, player1.y);
+		
+		//WaitForVBlank();
 	}
 	return 0;
 }

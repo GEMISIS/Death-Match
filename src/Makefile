@@ -17,8 +17,8 @@ include $(DEVKIT65XX)/snes_rules
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
-TARGET		:=	DeathMatch
-#$(shell basename $(CURDIR))
+PREVDIR		:=  $(realpath $(CURDIR)/..)
+TARGET		:=	$(shell basename $(PREVDIR))
 BUILD		:=  build
 SOURCES		:=	.
 INCLUDES	:=  include
@@ -62,11 +62,11 @@ clean:
 run:
 	$(DEVKITSNES)/emulators/higan/higan-performance.exe $(OUTPUT).sfc
 #---------------------------------------------------------------------------------
-#palibfont.pic: palibfont.bmp
-#	@echo convert font with no tile reduction ... $(notdir $@)
-#	$(GFXCONV) -n -gs8 -po2 -pc16 -pe1 -mR! -m! -p! $<
+palibfont.pic: palibfont.bmp
+	@echo convert font with no tile reduction ... $(notdir $@)
+	$(GFXCONV) -n -gs8 -po2 -pc16 -pe1 -mR! -m! -p! $<
 
-bitmaps : lvl1.pic
+bitmaps : lvl1.pic palibfont.pic
 
 #---------------------------------------------------------------------------------
 $(OUTPUT).sfc	: $(OFILES)

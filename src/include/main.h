@@ -6,3 +6,4 @@
 #include "input.h"
 #include "player.h"
 
+u8 players;
