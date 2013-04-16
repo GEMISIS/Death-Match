@@ -1,5 +1,7 @@
 #include "background.h"
 
+
+
 //Grab the current layer the player is on
 static Gfx_s *bgGetLayer(BGPos_s *bg)
 {
@@ -62,6 +64,61 @@ void BG_Load( u8 BG_HW_LAYER, static Gfx_s *lvlmap, u16 BG_TILE_ADDR, u16 BG_MAP
 //==================================================
 //Test stuff
 //==================================================
+/*
+Figuring out window documentation
+
+void bgSetWindowsRegions_fix(u8 bgNumber, u8 winNumber, u8 xLeft, u8 xRight) {
+    if (winNumber == 0) //window 1
+    {
+
+    	if(bgNumber < 2) {
+    		//Window BG1/BG2 Mask Settings
+    		//bits 7-6: BG2 BG4 MATH Window-2 Area (0 = disabled, 1 = inside window, 2 = outside)
+    		//bits 5-4: BG2 BG4 MATH Window-1 Area (0 = disabled, 1 = inside window, 2 = outside)
+    		//bits 3-2: BG1 BG3 OBJ Window-2 Area (0 = disabled, 1 = inside window, 2 = outside)
+    		//bits 1-0: BG1 BG3 OBJ Window-1 Area  (0 = disabled, 1 = inside window, 2 = outside)
+	        REG_W12SEL = 0x03; //bgs 1 and 3 are outside window 1, and inside window 2
+	    } else {
+	    	//bg's 3 and 4
+	    	REG_W34SEL = 0x03;
+	    }
+
+	    //left and right window boundaries
+	    REG_WH0 = xLeft;
+        REG_WH1 = xRight;
+
+	    REG_WOBJSEL = 0x03;
+
+
+        REG_WBGLOG = 0x01;
+        REG_WOBJLOG = 0x01;
+        REG_TMW = 0x11;
+    }
+    else //window 2
+    {
+    	if(bgNumber < 2) {
+	        REG_W12SEL = 0x03;   //XNOR
+	    } else {
+	    	REG_W34SEL = 0x03;  //XNOR
+	    }
+
+	    //left and right window boundaries
+        REG_WH2 = xLeft;
+        REG_WH3 = xRight;
+
+        //something here should be able to select what objects can display
+	    REG_WOBJSEL = 0x03;
+        REG_WBGLOG = 0x01;
+        REG_WOBJLOG = 0x01;
+
+        //window area main screen.
+        //bits 7-5 unused, 4 -enable objects(sprites),
+        //bits 3 - bg4, 2 - bg3, 1 - bg2, 0 - bg1
+        REG_TMW = 0x11;
+    }
+}
+*/
+
 static Gfx_s TestBg1, TestBg2;
 
 static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
@@ -76,7 +133,7 @@ static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
 }
 
 void dummyLoad(){
-	
+
 
 	consoleInitText(2, 0, &snesfont);
 
@@ -88,13 +145,32 @@ void dummyLoad(){
 	BG_Load(BG_P2_HW_LAYER, &TestBg2, BG_TILE_ADDR2, BG_MAP_ADDR2);
 
 	setMode(BG_MODE1, 0);
-	
-	setMode(BG_MODE1,BG3_MODE1_PRORITY_HIGH); //bgSetDisable(1);  
-	
-	bgSetWindowsRegions(BG_P1_HW_LAYER, BG_P1_HW_LAYER, 0x00, 0x80);
-	
-	// Set BG3 SubScreen and 
+
+	setMode(BG_MODE1,BG3_MODE1_PRORITY_HIGH); //bgSetDisable(1);
+
+	//bgSetWindowsRegions(BG_P1_HW_LAYER, BG_P1_HW_LAYER, 0x00, 0x80);
+
+	REG_W12SEL = 0x23;//set bg 1 and 3 inside window 1, 2 and 4 in window 2
+
+	//window 1 position
+    REG_WH0 = 0x00;
+    REG_WH1 = 0x80;
+
+    //window 2 position
+    REG_WH2 = 0x80;
+    REG_WH3 = 0xF0;
+
+	REG_WOBJSEL = 0x03;
+
+    REG_WBGLOG = 0x01;
+    REG_WOBJLOG = 0x01;
+
+    //enable windowing for bg's 1 and 2
+    REG_TMW = 0x03;
+
+
+	// Set BG3 SubScreen and
 	bgSetEnableSub(2);
-	
+
 	setBrightness(0xF);
 }
