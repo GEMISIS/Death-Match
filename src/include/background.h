@@ -4,11 +4,19 @@
 #include "assets.h"
 
 
+#define BG_TILE_ADDR1 0x5000
+#define BG_TILE_ADDR2 0x4000
+#define BG_MAP_ADDR1  0x1400
+#define BG_MAP_ADDR2  0x1800
+//snes hardware layer the level will be drawn too
+#define BG_P1_HW_LAYER 3
+#define BG_P2_HW_LAYER 2
+
 /*
 declare backgrounds here:
 */
 typedef struct {
-	char gfx, end, pal;
+	char gfx, gfxEnd, pal, map, mapEnd;
 }Map_s;
 
 //e.g.
