@@ -18,7 +18,9 @@ include $(DEVKIT65XX)/snes_rules
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
 TARGET		:=	$(shell basename $(CURDIR))
+BUILD		:=  build
 SOURCES		:=	.
+INCLUDES	:=  include
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -30,7 +32,7 @@ CFLAGS	+=	$(INCLUDE)
 # include and lib
 #---------------------------------------------------------------------------------
 LIBDIRS	:=	$(PVSNESLIB)
-LIBOBJS +:=
+LIBOBJS +:= $(BUILD)/*.obj
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 
