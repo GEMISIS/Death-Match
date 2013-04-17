@@ -1,13 +1,11 @@
 #pragma once
 
 #include <snes.h>
+#include "addr.h"
 #include "assets.h"
 
 
-#define BG_TILE_ADDR1 0x5000
-#define BG_TILE_ADDR2 0x3000
-#define BG_MAP_ADDR1  0x1800
-#define BG_MAP_ADDR2  0x2000
+
 //snes hardware layer the level will be drawn too
 #define BG_P1_HW_LAYER 0
 #define BG_P2_HW_LAYER 1

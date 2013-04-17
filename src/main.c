@@ -88,7 +88,7 @@ int main(void) {
 		}*/
 		WaitForVBlank();
 		bgSetScroll(0, player1->x, player1->y);
-		bgSetScroll(1, player1->x - 0x80, player1->y);
+		bgSetScroll(1, player1->x, player1->y);
 
 		//WaitForVBlank();
 	}
