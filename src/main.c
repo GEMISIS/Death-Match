@@ -31,19 +31,21 @@ int main(void) {
 
 	dummyLoad();
 	dummySprites();
+	updateSprite(0, player1->x & 0xFF, player1->y & 0xFF);
+	updateSprite(1, x & 0xFF, y & 0xFF);
 
 	//98-148 A-Z
 	//162-212 a-z 
 	char pahello[8] = "(pjxx ^";
 	pahello[5] = 0x7E;
-	char shiz[27] = "bdfhjlnprtvxzBDFHJLNPR\0";
+	char stuffz[27] = "bdfhjlnprtvxzBDFHJLNPR\0";
 
-	//shiz[2] = fix_char('a');
+	//stuffz[2] = fix_char('a');
 
 	bgSetScroll(BG_P1_HW_LAYER, player1->x, player1->y);
 	bgSetScroll(BG_P2_HW_LAYER, x, y);
 
-	//consoleDrawText(0, 1, shiz);
+	//consoleDrawText(0, 1, stuffz);
 	//consoleDrawText(25, 27, pahello);
 
 	setFadeEffect(2);
@@ -87,7 +89,8 @@ int main(void) {
 			}
 
 			if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-				oamSet(0, (player1->x)&0xFF, (player1->y)&0xFF, 3, 0, 0, 0, 0);
+				updateSprite(0, player1->x & 0xFF, player1->y & 0xFF);
+				//oamSet(0, (player1->x)&0xFF, (player1->y)&0xFF, 3, 0, 0, 0, 0);
 				//consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
 			}
 		}
@@ -114,7 +117,8 @@ int main(void) {
 					++y;
 				}
 				if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-					oamSet(4, x&0xFF, y&0xFF, 3, 0, 0, 0, 0);
+					updateSprite(1, x & 0xFF, y & 0xFF);
+					//oamSet(4, x&0xFF, y&0xFF, 3, 0, 0, 0, 0);
 				}
 			}
 		}

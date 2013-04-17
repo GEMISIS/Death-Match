@@ -4,18 +4,13 @@
 #include "assets.h"
 #include "addr.h"
 
-
-
 typedef struct {
 	char *gfx, *pal;
 	u16 gfxSize;
 	u16 x, y;
-	u8 prio, id;
+	u8 hFlip, vFlip;
+	u8 prio, gfxId, palId, size, visible;
 }Sprite_s;
 
-extern static void setSprite(Sprite_s *spr, char *gfx, char *gfxe,
-	char *pal);
-
-extern static void Load_Sprite();
-
+void updateSprite(u8 index, u16 x, u16 y);
 void dummySprites();

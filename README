@@ -14,7 +14,7 @@ Code Style:
 	Variable declarations: u8, u16, s8, s16, u32, s32 yourVar
 	Struct declarations  : struct Player_s { }; Player_s YourPlayer
 	Const / macros       : const u32 VARIABLE_ALL_CAPS
-						   #define YOUR_SHIT poop
+						   #define YOUR_STUFF stuff
 
 	function declarations:
 		unless specifically called in other source files, functions should be

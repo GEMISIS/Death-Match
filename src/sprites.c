@@ -10,22 +10,34 @@ static Sprite_s Link;
 
 static u8 spriteCount = 0;
 
-static void setSprite(Sprite_s *spr, char *gfx, char *gfxe,
+static void setSpriteData(u8 index, Sprite_s *spr, char *gfx, char *gfxe,
 	char *pal)
 {
 	spr->gfx = gfx;
 	spr->gfxSize = (gfxe - gfx);
 	spr->pal = pal;
-	spr->id = spriteCount++;
+	spr->palId = index;
+	spr->gfxId = index;
+	spr->size = OBJ_SMALL;
+	spr->hFlip = 0;
+	spr->vFlip = 0;
+	spr->prio = 3;
+	spr->visible = OBJ_SHOW;
+	spr->x = 0<<4;
+	spr->y = 0<<5;
 }
 
-static void Load_Sprite(Sprite_s *spr)
+void updateSprite(u8 index, u16 x, u16 y)
 {
-	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, 0, 0x0000, OBJ_SIZE32);
+	oamSet(index * 4, x, y, 3, 0, 0, index * 128, index);
+}
 
-	
-	oamSet(spr->id * 4, 2<<4, 2<<5, 3, 0, 0, 0, 0);
-	oamSetEx(spr->id * 4, OBJ_SMALL, OBJ_SHOW);
+static void loadSpriteData(Sprite_s *spr)
+{
+	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, spr->palId, SPRITE_ADDR_OFFSET + 0x1000 * spr->gfxId, OBJ_SIZE32);
+	oamSet(spr->gfxId * 4, spr->x>>4, spr->y>>5, spr->prio, spr->vFlip, spr->hFlip, spr->gfxId * 128, spr->palId);
+	oamSetEx(spr->gfxId * 4, spr->size, spr->visible);
+
 	/*#define OAM_HI_TABLE_START 128*4
 	u16 tempx, tempy;
     // Set low byte of x position and y position:
@@ -48,13 +60,13 @@ static void Load_Sprite(Sprite_s *spr)
 
 void dummySprites()
 {
-	setSprite(&Link, &spritegfx, &spritegfx_end, &spritepal);
-	Load_Sprite(&Link);
+	setSpriteData(0, &Link, &spritegfx, &spritegfx_end, &spritepal);
+	Link.x = 32 << 4;
+	Link.y = 32 << 5;
+	loadSpriteData(&Link);
 
-	//for testing vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-	oamInitGfxSet(&spritegfx, (&spritegfx_end - &spritegfx), &spritepal, 0, SPRITE_ADDR_TEMP|0x0F0, OBJ_SIZE32);
-
-	oamSet(4, 2<<5, 2<<5, 3, 0, 0, 0, 0);
-	oamSetEx(4, OBJ_SMALL, OBJ_SHOW);
-	//for testing ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	setSpriteData(1, &Link, &spritegfx, &spritegfx_end, &spritepal);
+	Link.x = 128 << 4;
+	Link.y = 64 << 5;
+	loadSpriteData(&Link);
 }
