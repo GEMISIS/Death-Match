@@ -2,25 +2,21 @@
 
 .section ".rodata1" superfree
 
-patterns:
+lvl1gfx:
 .incbin "lvl1.pic"
-patterns_end:
+lvl1gfx_end:
+
+lvl1map:
+.incbin "lvl1.map"
+lvl1map_end:
+
+lvl1pal:
+.incbin "lvl1.pal"
+lvl1pal_end:
 
 .ends
 
 .section ".rodata2" superfree
-
-map:
-.incbin "lvl1.map"
-map_end:
-
-palette:
-.incbin "lvl1.pal"
-palette_end:
-
-.ends
-
-.section ".rodata3" superfree
 
 lvl2gfx:
 .incbin "lvl2.pic"
@@ -36,7 +32,7 @@ lvl2pal_end:
 
 .ends
 
-.section ".rodata4"
+.section ".rodata3"
 
 gfxsprite:
 .incbin "sprite.pic"
@@ -44,7 +40,6 @@ gfxsprite_end:
 
 palsprite:
 .incbin "sprite.pal"
-palsprite_end:
 
 snesfont:
 .incbin "palibfont.pic"

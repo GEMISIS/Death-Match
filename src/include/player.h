@@ -2,16 +2,9 @@
 
 #include <snes.h>
 
-typedef struct{
+typedef struct {
 	u16 x, y;
-	u8 health;
-	u8 direction;
-	u8 weapon;
+	u8 health, direction;
+	u16 weapon;
+	u8 ammo;
 }Player_s;
-
-/*
-typedef struct _Bg_s{
-	u16 scrollX, scrollY;
-	u8 layer;
-}Bg_s;
-*/

@@ -2,8 +2,12 @@
 
 #include <snes.h>
 
+#include "addr.h"
+#include "assets.h"
 #include "background.h"
 #include "input.h"
 #include "player.h"
+#include "sprites.h"
+#include "text.h"
 
-u8 players;
+//static u8 players;

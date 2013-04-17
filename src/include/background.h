@@ -5,7 +5,6 @@
 #include "assets.h"
 
 
-
 //snes hardware layer the level will be drawn too
 #define BG_P1_HW_LAYER 0
 #define BG_P2_HW_LAYER 1

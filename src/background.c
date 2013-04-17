@@ -122,14 +122,15 @@ static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
 	lh->mapMode = tileMode;
 }
 
-void dummyLoad(){
+void dummyLoad()
+{
 
 
 	consoleInitText(2, 2, &snesfont);
 
 	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 
-	setLevel(&TestBg1, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end, SC_64x64);
+	setLevel(&TestBg1, &lvl1gfx, &lvl1gfx_end, &lvl1pal, &lvl1pal_end, &lvl1map, &lvl1map_end, SC_64x64);
 	setLevel(&TestBg2, &lvl2gfx, &lvl2gfx_end, &lvl2pal, &lvl2pal_end, &lvl2map, &lvl2map_end, SC_64x64);
 	BG_Load(BG_P1_HW_LAYER, &TestBg1, BG_TILE_ADDR1, BG_MAP_ADDR1, 0);
 	BG_Load(BG_P2_HW_LAYER, &TestBg2, BG_TILE_ADDR2, BG_MAP_ADDR2, 1);
@@ -146,7 +147,7 @@ void dummyLoad(){
 
     //window 2 position
     REG_WH2 = 0x80;
-    REG_WH3 = 0xF0;
+    REG_WH3 = 0x10;
 
     //these probably select what objects can be seen in each window
     //haven't figured this out yet
@@ -158,7 +159,7 @@ void dummyLoad(){
     //enable windowing for bg's 1 and 2
     REG_TMW = 0x03;
 
-	// Set BG3 SubScreen and
+	// Set BG3 SubScreen
 	//bgSetEnableSub(2);
 
 	setBrightness(0xF);

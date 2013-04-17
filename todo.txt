@@ -1,5 +1,5 @@
 -Split screen background drawing
--Player movement 4 way with straffing button
+-Player movement 4 way with strafing button
 -Multilayered levels
 -Vehicles
 -Guns on tiles
