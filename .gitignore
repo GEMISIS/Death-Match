@@ -10,6 +10,8 @@
 *.pnproj
 *.pnps
 
+Death-Match-vcproj/
+
 .DS_Store
 .DS_Store?
 ._*
