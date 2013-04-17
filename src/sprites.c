@@ -34,7 +34,7 @@ void updateSprite(u8 index, u16 x, u16 y)
 
 static void loadSpriteData(Sprite_s *spr)
 {
-	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, spr->palId, SPRITE_ADDR_OFFSET + 0x1000 * spr->gfxId, OBJ_SIZE32);
+	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, spr->palId, SPRITE_ADDR_OFFSET + (0x1000 * spr->gfxId), OBJ_SIZE32);
 	oamSet(spr->gfxId * 4, spr->x>>4, spr->y>>5, spr->prio, spr->vFlip, spr->hFlip, spr->gfxId * 128, spr->palId);
 	oamSetEx(spr->gfxId * 4, spr->size, spr->visible);
 
