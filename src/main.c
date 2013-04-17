@@ -22,8 +22,8 @@ int main(void) {
 
 	consoleInit();
 
-	dummySprites();
 	dummyLoad();
+	dummySprites();
 
 	//bgSetDisable(0);
 
