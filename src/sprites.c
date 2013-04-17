@@ -29,11 +29,13 @@ static void Load_Sprite(Sprite_s *spr)
 
 void dummySprites()
 {
-	setSprite(&Link, &gfxsprite, &gfxsprite_end, &palsprite);
+	setSprite(&Link, &spritegfx, &spritegfx_end, &spritepal);
 	Load_Sprite(&Link);
 
-	//oamInitGfxSet(gfxsprite, (gfxsprite_end - gfxsprite), palsprite, 0, 0x0000, OBJ_SIZE32);
+	//for testing vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+	oamInitGfxSet(&spritegfx, (&spritegfx_end - &spritegfx), &spritepal, 0, 0x0000, OBJ_SIZE32);
 
-	//oamSet(0, 32, 64, 3, 0, 0, 0, 0);
-	//oamSetEx(0, OBJ_SMALL, OBJ_SHOW);
+	oamSet(4, 64, 64, 3, 0, 0, 0, 0);
+	oamSetEx(4, OBJ_SMALL, OBJ_SHOW);
+	//for testing ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 }

@@ -41,7 +41,7 @@ int main(void) {
 	//shiz[2] = fix_char('a');
 
 	bgSetScroll(BG_P1_HW_LAYER, player1->x, player1->y);
-	bgSetScroll(BG_P2_HW_LAYER, player2->x, player2->y);
+	bgSetScroll(BG_P2_HW_LAYER, x, y);
 
 	consoleDrawText(0, 1, shiz);
 	consoleDrawText(25, 27, pahello);

@@ -34,11 +34,11 @@ lvl2pal_end:
 
 .section ".rodata3"
 
-gfxsprite:
+spritegfx:
 .incbin "sprite.pic"
-gfxsprite_end:
+spritegfx_end:
 
-palsprite:
+spritepal:
 .incbin "sprite.pal"
 
 snesfont:
