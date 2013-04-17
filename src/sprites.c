@@ -22,10 +22,10 @@ static void setSprite(Sprite_s *spr, char *gfx, char *gfxe,
 
 static void Load_Sprite(Sprite_s *spr)
 {
-	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, spr->palSize, SPRITE_ADDR_TEMP, OBJ_SIZE32);
+	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, 0, SPRITE_ADDR_TEMP, OBJ_SIZE32);
 
-	oamSet(Link.id, 20, 32, 3, 0, 0, 0, 0);
-	oamSetEx(Link.id, OBJ_SMALL, OBJ_SHOW);
+	oamSet(Link.id * 4, 20, 32, 3, 0, 0, 0, 0);
+	oamSetEx(Link.id * 4, OBJ_SMALL, OBJ_SHOW);
 }
 
 void dummySprites()
