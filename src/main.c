@@ -12,13 +12,13 @@
 
 //---------------------------------------------------------------------------------
 int main(void) {
-	static u16 x = 2<<1, y = 2<<1;
+	static u16 x = 2<<5, y = 2<<5;
 
 	Player_s *player1;
 	Player_s *player2;
 
 	player1->x = 2<<4;
-	player1->y = 2<<4;
+	player1->y = 2<<5;
 	player1->health = 100;
 
 	player2->x = 2<<3;
@@ -43,8 +43,8 @@ int main(void) {
 	bgSetScroll(BG_P1_HW_LAYER, player1->x, player1->y);
 	bgSetScroll(BG_P2_HW_LAYER, x, y);
 
-	consoleDrawText(0, 1, shiz);
-	consoleDrawText(25, 27, pahello);
+	//consoleDrawText(0, 1, shiz);
+	//consoleDrawText(25, 27, pahello);
 
 	setFadeEffect(2);
 
@@ -69,6 +69,7 @@ int main(void) {
 
 			if(pad0 & KEY_RIGHT){
 				++player1->x;
+				
 			}else if(pad0 & KEY_LEFT){
 				--player1->x;
 				if(player1->x < 1){
@@ -86,6 +87,7 @@ int main(void) {
 			}
 
 			if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
+				oamSet(0, (player1->x)&0xFF, (player1->y)&0xFF, 3, 0, 0, 0, 0);
 				//consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
 			}
 		}
@@ -110,6 +112,9 @@ int main(void) {
 					}
 				}else if(pad1 & KEY_DOWN){
 					++y;
+				}
+				if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
+					oamSet(4, x&0xFF, y&0xFF, 3, 0, 0, 0, 0);
 				}
 			}
 		}

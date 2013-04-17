@@ -126,7 +126,7 @@ void dummyLoad()
 {
 
 
-	consoleInitText(2, 2, &snesfont);
+	//consoleInitText(2, 2, &snesfont);
 
 	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 
@@ -135,8 +135,9 @@ void dummyLoad()
 	BG_Load(BG_P1_HW_LAYER, &TestBg1, BG_TILE_ADDR1, BG_MAP_ADDR1, 0);
 	BG_Load(BG_P2_HW_LAYER, &TestBg2, BG_TILE_ADDR2, BG_MAP_ADDR2, 1);
 
-	setMode(BG_MODE1,BG3_MODE1_PRORITY_HIGH); //bgSetDisable(1);
-
+	setMode(BG_MODE1,0);//BG3_MODE1_PRORITY_HIGH); //
+	bgSetDisable(2);
+	bgSetDisable(3);
 	//bgSetWindowsRegions(BG_P1_HW_LAYER, BG_P1_HW_LAYER, 0x00, 0x80);
 
 	REG_W12SEL = 0x23;//set bg 1 and 3 inside window 1, 2 and 4 in window 2

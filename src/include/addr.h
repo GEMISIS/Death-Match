@@ -8,4 +8,4 @@
 
 
 //----- SPRITE ADDRESSES ----- 
-#define SPRITE_ADDR_TEMP 0x9000
+#define SPRITE_ADDR_TEMP 0x0010
