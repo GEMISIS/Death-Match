@@ -36,10 +36,10 @@ use hardware scrolling which may be hard to implement
 software wise, especially since we can't scroll individual tiles
 unless in mode 5 and7 or something.
 */
-void BG_Load( u8 BG_HW_LAYER, static Gfx_s *lvlmap, u16 BG_TILE_ADDR, u16 BG_MAP_ADDR)
+void BG_Load( u8 BG_HW_LAYER, static Gfx_s *lvlmap, u16 BG_TILE_ADDR, u16 BG_MAP_ADDR, u8 pal)
 {
 	//initialize background tiles
-	bgInitTileSet(BG_HW_LAYER, lvlmap->gfx, lvlmap->pal, 0,
+	bgInitTileSet(BG_HW_LAYER, lvlmap->gfx, lvlmap->pal, pal,
 				  lvlmap->gfxSize, lvlmap->palSize,
 				  BG_16COLORS, BG_TILE_ADDR);
 
@@ -125,14 +125,14 @@ static void setLevel(Gfx_s *lh, char *gfx, char *gfxe,
 void dummyLoad(){
 
 
-	consoleInitText(2, 0, &snesfont);
+	consoleInitText(2, 2, &snesfont);
 
 	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 
 	setLevel(&TestBg1, &patterns, &patterns_end, &palette, &palette_end, &map, &map_end, SC_32x32);
 	setLevel(&TestBg2, &lvl2gfx, &lvl2gfx_end, &lvl2pal, &lvl2pal_end, &lvl2map, &lvl2map_end, SC_64x64);
-	BG_Load(BG_P1_HW_LAYER, &TestBg1, BG_TILE_ADDR1, BG_MAP_ADDR1);
-	BG_Load(BG_P2_HW_LAYER, &TestBg2, BG_TILE_ADDR2, BG_MAP_ADDR2);
+	BG_Load(BG_P1_HW_LAYER, &TestBg1, BG_TILE_ADDR1, BG_MAP_ADDR1, 0);
+	BG_Load(BG_P2_HW_LAYER, &TestBg2, BG_TILE_ADDR2, BG_MAP_ADDR2, 1);
 
 	setMode(BG_MODE1, 0);
 

@@ -43,7 +43,7 @@ int main(void) {
 
 		//WaitVBLFlag;
 
-		consoleSetTextCol(RGB15(31&player1->x,31&player1->y,4), RGB15(0,0,0));
+		//consoleSetTextCol(RGB15(31&player1->x,31&player1->y,4), RGB15(0,0,0));
 
 		scanPads();
 

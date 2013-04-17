@@ -5,9 +5,9 @@
 
 
 #define BG_TILE_ADDR1 0x5000
-#define BG_TILE_ADDR2 0x4000
-#define BG_MAP_ADDR1  0x1400
-#define BG_MAP_ADDR2  0x1800
+#define BG_TILE_ADDR2 0x3000
+#define BG_MAP_ADDR1  0x1800
+#define BG_MAP_ADDR2  0x2000
 //snes hardware layer the level will be drawn too
 #define BG_P1_HW_LAYER 0
 #define BG_P2_HW_LAYER 1
@@ -46,6 +46,6 @@ typedef struct {
 
 extern void BG_Draw(u16 x, u16 y, u8 wd, u8 ht, BGPos_s *bg);
 extern u16 BG_GetTile(u16 xPix, u16 yPix, BGPos_s *bg);
-extern void BG_Load(u8 BG_HW_LAYER, static Gfx_s *lvlmap, u16 BG_TILE_ADDR, u16 BG_MAP_ADDR);
+extern void BG_Load(u8 BG_HW_LAYER, static Gfx_s *lvlmap, u16 BG_TILE_ADDR, u16 BG_MAP_ADDR, u8 pal);
 
 void dummyLoad();
