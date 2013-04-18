@@ -66,88 +66,80 @@ static void levelToVram(void){
 	bgSetMapPtr(BG_P2_HW_LAYER, LEVEL_MAP_ADDR, lvlmap->mapMode);
 }
 
+
+
 static void initSplitScreen(void){
 	//split screen with bg layers 1 and 2
 
-	REG_W12SEL = 0x23;//set bg 1 and 3 inside window 1, 2 and 4 in window 2
+	//REG_W34SEL = 0x00;//2124 same bits as W12SEL but for bg's 3 and 4
+	REG_W12SEL = //bg 1
+				 //(1<<3) | //enable window 2
+				 //(1<<2) | //clip window 2 in or out
+				 (1<<1) | //enable window 1
+				 (1<<0) | //clip window 1 in or out
+				 //bg 2
+				 (1<<7) | //enable window 2
+				 (1<<6);// | //clip window 2 in or out
+				 //(1<<5)// | //enable window 1
+				 //(1<<4) ; //clip window 1 in or out
 
 	//window 1 position
-    REG_WH0 = 0x00;
-    REG_WH1 = 0x80;
+    REG_WH0 = 0x00;//2126 //left x position
+    REG_WH1 = 0x78;//2127 //to right x position
 
     //window 2 position
-    REG_WH2 = 0x80;
-    REG_WH3 = 0x10;
+    REG_WH2 = 0x88;//2128 //left x position
+    REG_WH3 = 0xFF;//2129 //to right x position
 
-    //these probably select what objects can be seen in each window
-    //haven't figured this out yet
-	REG_WOBJSEL = 0x03;
+    //2125 //ccccssss - color, sprites
+	REG_WOBJSEL =
+				  //(1<<7) | //A Enable window 2 for BG2/BG4/Color
+				  //(1<<6) | //B Window 2 Inversion for BG2/BG4/Color
+				  //(1<<5) | //C Enable window 1 for BG2/BG4/Color
+				  //(1<<4) | //D Window 1 Inversion for BG2/BG4/Color
+				  //(1<<3) | //a Enable window 2 for BG1/BG3/OBJ
+				  //(1<<2) | //b Window 2 Inversion for BG1/BG3/OBJ
+				  //(1<<1) | //c Enable window 1 for BG1/BG3/OBJ
+				  //(1<<0) ; //d Window 1 Inversion for BG1/BG3/OBJ
 
-    REG_WBGLOG = 0x01;
-    REG_WOBJLOG = 0x01;
 
-    //enable windowing for bg's 1 and 2
-    REG_TMW = 0x03;
+	//fiddling with these don't really produce much
+	//212b (00 or, 10 xor, 01 and, 11 xnr)
+	REG_WOBJLOG =
+				  //(1<<7) | //?
+				  //(1<<6) | //?
+				  //(1<<5) | //?
+				  //(1<<4) | //?
+				  //(1<<3) | //color windows
+				  //(1<<2) | //color windows
+				  (1<<1) | //sprites
+				  (1<<0) ; //sprites
+
+	//212a (00 or, 10 xor, 01 and, 11 xnr)
+    REG_WBGLOG =
+    			 //(1<<7) | //bg 4
+    			 //(1<<6) | //bg 4
+    			 //(1<<5) | //bg 3
+    			 //(1<<4) | //bg 3
+    			 //(1<<3) | //bg 2
+    			 (1<<2) | //bg 2
+    			 //(1<<1) | //bg 1
+    			 (1<<0) ; //bg 1
+
+
+
+
+
+    //212e - enable windowing for bg's 1 and 2
+    REG_TMW = //(1<<7) | //unused
+    		  //(1<<6) | //unused
+    		  //(1<<5) | //unused
+    		  (1<<4) | //sprites enable
+    		  //(1<<3) | //bg 4 enable
+    		  //(1<<2) | //bg 3 enable
+    		  (1<<1) | //bg 1 enable
+    		  (1<<0) ; //bg 2 enable
 }
-
-
-//==================================================
-//Test stuff
-//==================================================
-/*
-Figuring out window documentation
-
-void bgSetWindowsRegions_fix(u8 bgNumber, u8 winNumber, u8 xLeft, u8 xRight) {
-    if (winNumber == 0) //window 1
-    {
-
-    	if(bgNumber < 2) {
-    		//Window BG1/BG2 Mask Settings
-    		//bits 7-6: BG2 BG4 MATH Window-2 Area (0 = disabled, 1 = inside window, 2 = outside)
-    		//bits 5-4: BG2 BG4 MATH Window-1 Area (0 = disabled, 1 = inside window, 2 = outside)
-    		//bits 3-2: BG1 BG3 OBJ Window-2 Area (0 = disabled, 1 = inside window, 2 = outside)
-    		//bits 1-0: BG1 BG3 OBJ Window-1 Area  (0 = disabled, 1 = inside window, 2 = outside)
-	        REG_W12SEL = 0x03; //bgs 1 and 3 are outside window 1, and inside window 2
-	    } else {
-	    	//bg's 3 and 4
-	    	REG_W34SEL = 0x03;
-	    }
-
-	    //left and right window boundaries
-	    REG_WH0 = xLeft;
-        REG_WH1 = xRight;
-
-	    REG_WOBJSEL = 0x03;
-
-
-        REG_WBGLOG = 0x01;
-        REG_WOBJLOG = 0x01;
-        REG_TMW = 0x11;
-    }
-    else //window 2
-    {
-    	if(bgNumber < 2) {
-	        REG_W12SEL = 0x03;   //XNOR
-	    } else {
-	    	REG_W34SEL = 0x03;  //XNOR
-	    }
-
-	    //left and right window boundaries
-        REG_WH2 = xLeft;
-        REG_WH3 = xRight;
-
-        //something here should be able to select what objects can display
-	    REG_WOBJSEL = 0x03;
-        REG_WBGLOG = 0x01;
-        REG_WOBJLOG = 0x01;
-
-        //window area main screen.
-        //bits 7-5 unused, 4 -enable objects(sprites),
-        //bits 3 - bg4, 2 - bg3, 1 - bg2, 0 - bg1
-        REG_TMW = 0x11;
-    }
-}
-*/
 
 
 void Level_Load(u8 levelId)
