@@ -57,16 +57,14 @@ static void levelToVram(void){
 	dmaCopyCGram(lvlmap->pal, palEntry, lvlmap->palSize);
 	//set gfx for both bg layers
 	bgSetGfxPtr(BG_P1_HW_LAYER, LEVEL_GFX_ADDR);
-	bgSetGfxPtr(BG_P2_HW_LAYER, LEVEL_GFX_ADDR);
+	//bgSetGfxPtr(BG_P2_HW_LAYER, LEVEL_GFX_ADDR);
 
 	WaitForVBlank();
 	dmaCopyVram(lvlmap->map, LEVEL_MAP_ADDR, lvlmap->mapSize);
 	//set map for both bg layers
 	bgSetMapPtr(BG_P1_HW_LAYER, LEVEL_MAP_ADDR, lvlmap->mapMode);
-	bgSetMapPtr(BG_P2_HW_LAYER, LEVEL_MAP_ADDR, lvlmap->mapMode);
+	//bgSetMapPtr(BG_P2_HW_LAYER, LEVEL_MAP_ADDR, lvlmap->mapMode);
 }
-
-
 
 static void initSplitScreen(void){
 	//split screen with bg layers 1 and 2
@@ -133,8 +131,8 @@ static void initSplitScreen(void){
     		  (1<<4) | //sprites enable
     		  //(1<<3) | //bg 4 enable
     		  //(1<<2) | //bg 3 enable
-    		  (1<<1) | //bg 1 enable
-    		  (1<<0) ; //bg 2 enable
+    		  (1<<1) | //bg 2 enable
+    		  (1<<0) ; //bg 1 enable
 }
 
 
@@ -159,8 +157,8 @@ void Level_Load(u8 levelId)
 	levelToVram();
 
 	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH); //
-	bgSetDisable(2); bgSetDisable(3);
+	bgSetDisable(1);bgSetDisable(2); bgSetDisable(3);
 
 	setBrightness(0xF);
-	initSplitScreen();
+	//initSplitScreen();
 }

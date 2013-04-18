@@ -20,27 +20,17 @@ static void customVBL()
     unsigned int tt=snes_vblank_count;
     unsigned int count = 0;
 
-    while (tt == snes_vblank_count){
-    	if(count < (192>>1))//figure out what value goes here
-    	{
-		    REG_WH0 = 0x00;//2126 //left x position
-		    REG_WH1 = 0xFF;//2127 //to right x position
-		    REG_WH2 = 0x00;//2126 //left x position
-		    REG_WH3 = 0x00;//2127 //to right x position
-    	} else
-    	{
-		    REG_WH2 = 0x00;//2126 //left x position
-		    REG_WH3 = 0xFF;//2127 //to right x position
-		    REG_WH0 = 0x00;//2126 //left x position
-		    REG_WH1 = 0x00;//2127 //to right x position
+
+    bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
+    while (tt == snes_vblank_count)
+    {
+    	if(++count == 231){
+    		bgSetScroll(BG_P1_HW_LAYER, player2.x, player2.y);
     	}
-    	++count;
     }
 }
 int main(void) {
 	static u16 x = 2<<5, y = 2<<5;
-
-
 
 	player1.x = 2<<4;
 	player1.y = 2<<5;
@@ -69,7 +59,7 @@ int main(void) {
 	//stuffz[2] = fix_char('a');
 
 	bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
-	bgSetScroll(BG_P2_HW_LAYER, x, y);
+	//bgSetScroll(BG_P2_HW_LAYER, x, y);
 
 	//consoleDrawText(0, 1, stuffz);
 	//consoleDrawText(25, 27, pahello);
@@ -166,8 +156,8 @@ int main(void) {
 			}
 		}
 
-		bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
-		bgSetScroll(BG_P2_HW_LAYER, x, y);
+		//bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
+		//bgSetScroll(BG_P2_HW_LAYER, x, y);
 		customVBL();
 		//WaitForVBlank();
 	}
