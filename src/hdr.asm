@@ -33,7 +33,7 @@
   VERSION $00                   ; $00 = 1.00, $01 = 1.01, etc.
 .ENDSNES
 
-; .SNESHEADER to make header, shall investigate
+; .COMPUTESNESCHECKSUM to make checksum, shall investigate
 
 .SNESNATIVEVECTOR               ; Define Native Mode interrupt vector table
   COP EmptyHandler
@@ -51,4 +51,3 @@
   IRQBRK EmptyHandler
 .ENDEMUVECTOR
 
-.COMPUTESNESCHECKSUM
