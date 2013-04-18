@@ -85,10 +85,10 @@ static void initSplitScreen(void){
 
 	//window 1 position
     REG_WH0 = 0x00;//2126 //left x position
-    REG_WH1 = 0x78;//2127 //to right x position
+    REG_WH1 = 0x60;//2127 //to right x position
 
     //window 2 position
-    REG_WH2 = 0x88;//2128 //left x position
+    REG_WH2 = 0x90;//2128 //left x position
     REG_WH3 = 0xFF;//2129 //to right x position
 
     //2125 //ccccssss - color, sprites
@@ -125,10 +125,6 @@ static void initSplitScreen(void){
     			 //(1<<2) | //bg 2
     			 //(1<<1) | //bg 1
     			 //(1<<0) ; //bg 1
-
-
-
-
 
     //212e - enable windowing for bg's 1 and 2
     REG_TMW = //(1<<7) | //unused

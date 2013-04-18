@@ -11,6 +11,30 @@
 //#define fix_char(chr) (chr+(chr&1))
 
 //---------------------------------------------------------------------------------
+#define REG_VBLCOUNT    (*(vuint8*)0x4209)
+
+static void customVBL()
+{
+    unsigned int tt=snes_vblank_count;
+    unsigned int count = 0;
+    while (tt == snes_vblank_count){
+    	if(count < (261>>1))//figure out what value goes here
+    	{
+		    REG_WH0 = 0x00;//2126 //left x position
+		    REG_WH1 = 0xFF;//2127 //to right x position
+		    REG_WH2 = 0x00;//2126 //left x position
+		    REG_WH3 = 0x00;//2127 //to right x position
+    	} else
+    	{
+		    REG_WH2 = 0x00;//2126 //left x position
+		    REG_WH3 = 0xFF;//2127 //to right x position
+		    REG_WH0 = 0x00;//2126 //left x position
+		    REG_WH1 = 0x00;//2127 //to right x position
+    	}
+    	++count;
+    }
+
+}
 int main(void) {
 	static u16 x = 2<<5, y = 2<<5;
 
@@ -143,8 +167,8 @@ int main(void) {
 
 		bgSetScroll(BG_P1_HW_LAYER, player1->x, player1->y);
 		bgSetScroll(BG_P2_HW_LAYER, x, y);
-
-		WaitForVBlank();
+		customVBL();
+		//WaitForVBlank();
 	}
 	return 0;
 }
