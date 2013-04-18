@@ -9,7 +9,7 @@ typedef struct {
 	u16 gfxSize;
 	u16 x, y;
 	u8 hFlip, vFlip;
-	u8 prio, gfxId, palId, size, visible;
+	u8 priority, gfxId, palId, size, visible;
 }Sprite_s;
 
 void updateSprite(u8 index, u16 x, u16 y);
