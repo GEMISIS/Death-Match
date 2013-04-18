@@ -12,11 +12,14 @@
 
 //---------------------------------------------------------------------------------
 #define REG_VBLCOUNT    (*(vuint8*)0x4209)
+static Player_s player1;
+static Player_s player2;
 
 static void customVBL()
 {
     unsigned int tt=snes_vblank_count;
     unsigned int count = 0;
+
     while (tt == snes_vblank_count){
     	if(count < (192>>1))//figure out what value goes here
     	{
@@ -33,21 +36,19 @@ static void customVBL()
     	}
     	++count;
     }
-
 }
 int main(void) {
 	static u16 x = 2<<5, y = 2<<5;
 
-	Player_s *player1;
-	Player_s *player2;
 
-	player1->x = 2<<4;
-	player1->y = 2<<5;
-	player1->health = 100;
 
-	player2->x = 2<<3;
-	player2->y = 2<<3;
-	player2->health = 100;
+	player1.x = 2<<4;
+	player1.y = 2<<5;
+	player1.health = 100;
+
+	player2.x = 2<<3;
+	player2.y = 2<<3;
+	player2.health = 100;
 
 	u8 players = 1;
 
@@ -55,7 +56,7 @@ int main(void) {
 
 	Level_Load(1);//load level 0
 	DummySprites();
-	UpdateSprite(0, player1->x & 0xFF, player1->y & 0xFF);
+	UpdateSprite(0, player1.x & 0xFF, player1.y & 0xFF);
 	UpdateSprite(1, x & 0xFF, y & 0xFF);
 
 	//98-148 A-Z
@@ -67,7 +68,7 @@ int main(void) {
 
 	//stuffz[2] = fix_char('a');
 
-	bgSetScroll(BG_P1_HW_LAYER, player1->x, player1->y);
+	bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
 	bgSetScroll(BG_P2_HW_LAYER, x, y);
 
 	//consoleDrawText(0, 1, stuffz);
@@ -100,32 +101,32 @@ int main(void) {
 		if(pad0){
 
 			if(pad0 & (KEY_A | KEY_X)){
-				player1->health < 254 ? ++player1->health : player1->health = 255;
+				player1.health < 254 ? ++player1.health : player1.health = 255;
 			}else if(pad0 & (KEY_B | KEY_Y)){
-				player1->health > 0 ? --player1->health : player1->health = 0;
+				player1.health > 0 ? --player1.health : player1.health = 0;
 			}
 
 			if(pad0 & KEY_RIGHT){
-				++player1->x;
+				++player1.x;
 
 			}else if(pad0 & KEY_LEFT){
-				--player1->x;
-				if(player1->x < 1){
-					player1->x = 1;
+				--player1.x;
+				if(player1.x < 1){
+					player1.x = 1;
 				}
 			}
 
 			if(pad0 & KEY_UP){
-				--player1->y;
-				if(player1->y < 1){
-					player1->y = 1;
+				--player1.y;
+				if(player1.y < 1){
+					player1.y = 1;
 				}
 			}else if(pad0 & KEY_DOWN){
-				++player1->y;
+				++player1.y;
 			}
 
 			if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-				UpdateSprite(0, player1->x & 0xFF, player1->y & 0xFF);
+				UpdateSprite(0, player1.x & 0xFF, player1.y & 0xFF);
 				//oamSet(0, (player1->x)&0xFF, (player1->y)&0xFF, 3, 0, 0, 0, 0);
 				//consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
 			}
@@ -165,7 +166,7 @@ int main(void) {
 			}
 		}
 
-		bgSetScroll(BG_P1_HW_LAYER, player1->x, player1->y);
+		bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
 		bgSetScroll(BG_P2_HW_LAYER, x, y);
 		customVBL();
 		//WaitForVBlank();
