@@ -93,13 +93,13 @@ static void initSplitScreen(void){
 
     //2125 //ccccssss - color, sprites
 	REG_WOBJSEL =
-				  //(1<<7) | //A Enable window 2 for BG2/BG4/Color
+				  (1<<7) | //A Enable window 2 for BG2/BG4/Color
 				  //(1<<6) | //B Window 2 Inversion for BG2/BG4/Color
 				  //(1<<5) | //C Enable window 1 for BG2/BG4/Color
 				  //(1<<4) | //D Window 1 Inversion for BG2/BG4/Color
-				  //(1<<3) | //a Enable window 2 for BG1/BG3/OBJ
+				  (1<<3) | //a Enable window 2 for BG1/BG3/OBJ
 				  //(1<<2) | //b Window 2 Inversion for BG1/BG3/OBJ
-				  //(1<<1) | //c Enable window 1 for BG1/BG3/OBJ
+				  (1<<1) ; //c Enable window 1 for BG1/BG3/OBJ
 				  //(1<<0) ; //d Window 1 Inversion for BG1/BG3/OBJ
 
 
@@ -116,15 +116,15 @@ static void initSplitScreen(void){
 				  (1<<0) ; //sprites
 
 	//212a (00 or, 10 xor, 01 and, 11 xnr)
-    REG_WBGLOG =
+    REG_WBGLOG = 0;
     			 //(1<<7) | //bg 4
     			 //(1<<6) | //bg 4
     			 //(1<<5) | //bg 3
     			 //(1<<4) | //bg 3
     			 //(1<<3) | //bg 2
-    			 (1<<2) | //bg 2
+    			 //(1<<2) | //bg 2
     			 //(1<<1) | //bg 1
-    			 (1<<0) ; //bg 1
+    			 //(1<<0) ; //bg 1
 
 
 
