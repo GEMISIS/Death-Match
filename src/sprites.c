@@ -29,14 +29,14 @@ static void setSpriteData(u8 index, Sprite_s *spr, char *gfx, char *gfxe,
 
 void updateSprite(u8 index, u16 x, u16 y)
 {
-	oamSet(index * 4, x, y, 3, 0, 0, index * 128, index);
+	oamSet((index<<2), x, y, 3, 0, 0, (index<<7), index);
 }
 
 static void loadSpriteData(Sprite_s *spr)
 {
-	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, spr->palId, SPRITE_ADDR_OFFSET + 0x1000 * spr->gfxId, OBJ_SIZE32);
-	oamSet(spr->gfxId * 4, spr->x>>4, spr->y>>5, spr->prio, spr->vFlip, spr->hFlip, spr->gfxId * 0x60, spr->palId);
-	oamSetEx(spr->gfxId * 4, spr->size, spr->visible);
+	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, spr->palId, SPRITE_ADDR_OFFSET + (spr->gfxId<<12), OBJ_SIZE32);
+	oamSet((spr->gfxId<<2), spr->x>>4, spr->y>>5, spr->prio, spr->vFlip, spr->hFlip, (spr->gfxId<<7), spr->palId);
+	oamSetEx((spr->gfxId<<2), spr->size, spr->visible);
 
 	/*#define OAM_HI_TABLE_START 128*4
 	u16 tempx, tempy;
