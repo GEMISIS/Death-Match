@@ -1,5 +1,5 @@
 #include "input.h"
 
-void proccessInput(u16 pad) {
-	
+extern void ProccessInput(u16 pad) {
+	//TODO: unsure how we should use this...
 }

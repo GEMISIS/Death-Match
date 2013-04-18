@@ -3,7 +3,8 @@
 /*realtimeFade(mode, rangeLow, rangeHigh)
 	mode: 1 = in, 0 = out
 	brightness: brightness to fade in/out to*/
-extern void realtimeFade(u8 mode, u8 brightness){
+extern void RealtimeFade(u8 mode, u8 brightness)
+{
 	static u8 level = 0xF;
 	static u8 interval = 0;
 	
@@ -21,7 +22,7 @@ extern void realtimeFade(u8 mode, u8 brightness){
 }
 
 
-/*static void flashScreen(u8 mode, u8 rangeLow, u8 rangeHigh){
+/*static void FlashScreen(u8 mode, u8 rangeLow, u8 rangeHigh){
 	static u8 level = 0xF;
 	static u8 in = 0;
 	static u8 interval = 0;

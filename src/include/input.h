@@ -5,4 +5,4 @@
 
 static u16 pad0, pad1;
 
-void proccessInput(u16 pad); //Process input for pad, update player
+void ProccessInput(u16 pad); //Process input for pad, update player

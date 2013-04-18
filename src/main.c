@@ -30,9 +30,9 @@ int main(void) {
 	consoleInit();
 
 	Level_Load(1);//load level 0
-	dummySprites();
-	updateSprite(0, player1->x & 0xFF, player1->y & 0xFF);
-	updateSprite(1, x & 0xFF, y & 0xFF);
+	DummySprites();
+	UpdateSprite(0, player1->x & 0xFF, player1->y & 0xFF);
+	UpdateSprite(1, x & 0xFF, y & 0xFF);
 
 	//98-148 A-Z
 	//162-212 a-z
@@ -58,13 +58,13 @@ int main(void) {
 
 		++fading;
 		if(fading<60){
-			realtimeFade(0, 0);
+			RealtimeFade(0, 0);
 		}else if(fading<150){
-			realtimeFade(1, 0xA);
+			RealtimeFade(1, 0xA);
 		}else if(fading<180){
-			realtimeFade(0, 0x2);
+			RealtimeFade(0, 0x2);
 		}else{
-			realtimeFade(1, 0xF);
+			RealtimeFade(1, 0xF);
 		}
 
 		scanPads();
@@ -99,7 +99,7 @@ int main(void) {
 			}
 
 			if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-				updateSprite(0, player1->x & 0xFF, player1->y & 0xFF);
+				UpdateSprite(0, player1->x & 0xFF, player1->y & 0xFF);
 				//oamSet(0, (player1->x)&0xFF, (player1->y)&0xFF, 3, 0, 0, 0, 0);
 				//consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
 			}
@@ -133,7 +133,7 @@ int main(void) {
 					++y;
 				}
 				if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-					updateSprite(1, x & 0xFF, y & 0xFF);
+					UpdateSprite(1, x & 0xFF, y & 0xFF);
 					//oamSet(4, x&0xFF, y&0xFF, 3, 0, 0, 0, 0);
 				}
 			}

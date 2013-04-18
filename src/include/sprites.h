@@ -12,5 +12,5 @@ typedef struct {
 	u8 priority, gfxId, palId, size, visible;
 }Sprite_s;
 
-void updateSprite(u8 index, u16 x, u16 y);
-void dummySprites();
+void UpdateSprite(u8 index, u16 x, u16 y);
+void DummySprites();

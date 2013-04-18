@@ -27,7 +27,7 @@ static void setSpriteData(u8 index, u8 priority, Sprite_s* spr, char *gfx, char 
 	spr->vFlip = 0;
 }
 
-void updateSprite(u8 index, u16 x, u16 y)
+void UpdateSprite(u8 index, u16 x, u16 y)
 {
 	u8 *ptrOam;
     ptrOam = (unsigned char *) oamMemory;
@@ -43,7 +43,7 @@ static void loadSpriteData(Sprite_s* spr)
 	oamSetEx((spr->gfxId<<2), spr->size, spr->visible);
 }
 
-void dummySprites()
+void DummySprites()
 {
 	setSpriteData(0, 3, &Link, &spritegfx, &spritegfx_end, &spritepal);
 	Link.x = 32 << 4;
