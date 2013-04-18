@@ -1,11 +1,9 @@
 #pragma once
 
-//----- BG ADDRESSES ----- 
-#define BG_TILE_ADDR1 0x3000 //0x5000
-#define BG_TILE_ADDR2 0x4000 //0x6000
-#define BG_MAP_ADDR1  0x1000
-#define BG_MAP_ADDR2  0x2000 //0x3000
+//----- BG ADDRESSES -----
+#define LEVEL_PAL_SLOT 0
+#define LEVEL_MAP_ADDR 0xD000
+#define LEVEL_GFX_ADDR 0xE000
 
-
-//----- SPRITE ADDRESSES ----- 
+//----- SPRITE ADDRESSES -----
 #define SPRITE_ADDR_OFFSET 0x0000

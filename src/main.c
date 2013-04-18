@@ -29,13 +29,13 @@ int main(void) {
 
 	consoleInit();
 
-	dummyLoad();
+	Level_Load(1);//load level 0
 	dummySprites();
 	updateSprite(0, player1->x & 0xFF, player1->y & 0xFF);
 	updateSprite(1, x & 0xFF, y & 0xFF);
 
 	//98-148 A-Z
-	//162-212 a-z 
+	//162-212 a-z
 	char pahello[8] = "(pjxx ^";
 	pahello[5] = 0x7E;
 	char stuffz[27] = "bdfhjlnprtvxzBDFHJLNPR\0";
@@ -71,7 +71,7 @@ int main(void) {
 
 			if(pad0 & KEY_RIGHT){
 				++player1->x;
-				
+
 			}else if(pad0 & KEY_LEFT){
 				--player1->x;
 				if(player1->x < 1){
@@ -93,11 +93,17 @@ int main(void) {
 				//oamSet(0, (player1->x)&0xFF, (player1->y)&0xFF, 3, 0, 0, 0, 0);
 				//consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
 			}
+
+			if(pad0 & KEY_R){
+				Level_Load(1);//load level 1
+			} else if (pad0 & KEY_L){
+				Level_Load(0);//load level 0
+			}
 		}
 
 		if(players == 1){
 			pad1 = padsCurrent(1);
-			
+
 			if(pad1){
 				if(pad1 & KEY_RIGHT){
 					++x;
@@ -122,7 +128,7 @@ int main(void) {
 				}
 			}
 		}
-		
+
 		bgSetScroll(BG_P1_HW_LAYER, player1->x, player1->y);
 		bgSetScroll(BG_P2_HW_LAYER, x, y);
 
