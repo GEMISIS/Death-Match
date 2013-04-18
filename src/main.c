@@ -49,7 +49,7 @@ int main(void) {
 	//consoleDrawText(0, 1, stuffz);
 	//consoleDrawText(25, 27, pahello);
 
-	setFadeEffect(2);
+	//setFadeEffect(2);
 
 	WaitForVBlank();
 	u8 fading = 0;
@@ -58,13 +58,15 @@ int main(void) {
 
 		++fading;
 		if(fading<60){
-			RealtimeFade(0, 0);
+			RealtimeFade(1, 0xF);
 		}else if(fading<150){
-			RealtimeFade(1, 0xA);
+			RealtimeFade(0, 0x8);
 		}else if(fading<180){
 			RealtimeFade(0, 0x2);
+		}else if(fading<230){
+			RealtimeFade(1, 0xC);
 		}else{
-			RealtimeFade(1, 0xF);
+			RealtimeFade(0, 0x0);
 		}
 
 		scanPads();

@@ -5,11 +5,10 @@
 	brightness: brightness to fade in/out to*/
 extern void RealtimeFade(u8 mode, u8 brightness)
 {
-	static u8 level = 0xF;
-	static u8 interval = 0;
+	static u8 level = 0;
 	
 	if(mode == 1){
-		if(level<brightness){
+		if(level<(brightness&0xF)){
 			++level;
 		}
 	}else{
@@ -17,7 +16,6 @@ extern void RealtimeFade(u8 mode, u8 brightness)
 			--level;
 		}
 	}
-	level &= 0xF;
 	REG_INIDISP = level;
 }
 
