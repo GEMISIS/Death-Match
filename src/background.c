@@ -161,6 +161,6 @@ void Level_Load(u8 levelId)
 	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH); //
 	bgSetDisable(2); bgSetDisable(3);
 
-	setBrightness(0x0);
+	setBrightness(0xF);
 	initSplitScreen();
 }

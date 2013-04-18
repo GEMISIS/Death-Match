@@ -18,7 +18,7 @@ static void customVBL()
     unsigned int tt=snes_vblank_count;
     unsigned int count = 0;
     while (tt == snes_vblank_count){
-    	if(count < (261>>1))//figure out what value goes here
+    	if(count < (192>>1))//figure out what value goes here
     	{
 		    REG_WH0 = 0x00;//2126 //left x position
 		    REG_WH1 = 0xFF;//2127 //to right x position
@@ -80,7 +80,7 @@ int main(void) {
 	//setModeHdmaGradient(31);
 	while(1) {
 
-		++fading;
+		/*++fading;
 		if(fading<60){
 			RealtimeFade(1, 0xF);
 		}else if(fading<150){
@@ -91,7 +91,7 @@ int main(void) {
 			RealtimeFade(1, 0xC);
 		}else{
 			RealtimeFade(0, 0x0);
-		}
+		}*/
 
 		scanPads();
 
