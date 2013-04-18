@@ -9,5 +9,6 @@
 #include "player.h"
 #include "sprites.h"
 #include "text.h"
+#include "video.h"
 
 //static u8 players;

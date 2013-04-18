@@ -39,6 +39,7 @@ int main(void) {
 	char pahello[8] = "(pjxx ^";
 	pahello[5] = 0x7E;
 	char stuffz[27] = "bdfhjlnprtvxzBDFHJLNPR\0";
+	//max capacity for u8 array 0xD4, max capacity for u6 0x6A
 
 	//stuffz[2] = fix_char('a');
 
@@ -51,11 +52,20 @@ int main(void) {
 	setFadeEffect(2);
 
 	WaitForVBlank();
+	u8 fading = 0;
 	//setModeHdmaGradient(31);
 	while(1) {
-		//WaitVBLFlag;
 
-		//consoleSetTextCol(RGB15(31&player1->x,31&player1->y,4), RGB15(0,0,0));
+		++fading;
+		if(fading<60){
+			realtimeFade(0, 0);
+		}else if(fading<150){
+			realtimeFade(1, 0xA);
+		}else if(fading<180){
+			realtimeFade(0, 0x2);
+		}else{
+			realtimeFade(1, 0xF);
+		}
 
 		scanPads();
 
