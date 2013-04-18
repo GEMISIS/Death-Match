@@ -34,8 +34,8 @@ void updateSprite(u8 index, u16 x, u16 y)
 
 static void loadSpriteData(Sprite_s *spr)
 {
-	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, spr->palId, SPRITE_ADDR_OFFSET + (0x1000 * spr->gfxId), OBJ_SIZE32);
-	oamSet(spr->gfxId * 4, spr->x>>4, spr->y>>5, spr->prio, spr->vFlip, spr->hFlip, spr->gfxId * 128, spr->palId);
+	oamInitGfxSet(spr->gfx, spr->gfxSize, spr->pal, spr->palId, SPRITE_ADDR_OFFSET + 0x0800 * spr->gfxId, OBJ_SIZE32);
+	oamSet(spr->gfxId * 4, spr->x>>4, spr->y>>5, spr->prio, spr->vFlip, spr->hFlip, spr->gfxId * 0x60, spr->palId);
 	oamSetEx(spr->gfxId * 4, spr->size, spr->visible);
 
 	/*#define OAM_HI_TABLE_START 128*4
@@ -60,13 +60,21 @@ static void loadSpriteData(Sprite_s *spr)
 
 void dummySprites()
 {
-	setSpriteData(0, &Link, &spritegfx, &spritegfx_end, &spritepal);
-	Link.x = 32 << 4;
-	Link.y = 32 << 5;
-	loadSpriteData(&Link);
+	oamInitGfxSet(&spritegfx, (&spritegfx_end - &spritegfx), &spritepal, 0, 0x0000, OBJ_SIZE32);
+	oamInitGfxSet(&spritegfx, (&spritegfx_end - &spritegfx), &spritepal, 1, 0x1000, OBJ_SIZE32);
 
-	setSpriteData(1, &Link, &spritegfx, &spritegfx_end, &spritepal);
-	Link.x = 128 << 4;
-	Link.y = 64 << 5;
-	loadSpriteData(&Link);
+	oamSet(0, 32, 32, 3, 0, 0, 0x00, 0x0);
+	oamSetEx(0, OBJ_SMALL, OBJ_SHOW);
+
+	oamSet(4, 32, 32, 3, 0, 0, 0x80, 0x1);
+	oamSetEx(4, OBJ_SMALL, OBJ_SHOW);
+	//setSpriteData(0, &Link, &spritegfx, &spritegfx_end, &spritepal);
+	//Link.x = 32 << 4;
+	//Link.y = 32 << 5;
+	//loadSpriteData(&Link);
+
+	//setSpriteData(1, &Link, &spritegfx, &spritegfx_end, &spritepal);
+	//Link.x = 128 << 4;
+	//Link.y = 64 << 5;
+	//loadSpriteData(&Link);
 }
