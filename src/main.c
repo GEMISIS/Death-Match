@@ -11,53 +11,41 @@
 //#define fix_char(chr) (chr+(chr&1))
 
 //---------------------------------------------------------------------------------
-#define REG_VBLCOUNT    (*(vuint8*)0x4209)
-static Player_s player1;
-static Player_s player2;
 
+static Player_s player1, player2;
 
-extern windowDisable(void);
-extern void windowClipTop(u16 left, u16 right);
-
-u16 hideAll = 0;
-
+//Custom VBL for handling split screen with backgrounds
 static void customVBL()
 {
     unsigned int tt=snes_vblank_count;
     unsigned int count = 0;
 
-    hideAll = 0;
-    oamSetEx(0, OBJ_SMALL, OBJ_SHOW);
-    bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
+    //first update top screen
+    bgSetScroll(BG_LAYER_LEVEL, player1.x, player1.y);
     while (tt == snes_vblank_count)
     {
-    	if(++count == 231){
-    		hideAll = 1;
-    		bgSetScroll(BG_P1_HW_LAYER, player2.x, player2.y);
+    	if(++count == 231){//then update bottom
+    		bgSetScroll(BG_LAYER_LEVEL, player2.x, player2.y);
     	}
     }
 
 }
 
-void nmiFun(){
-
-	if(hideAll){
-		oamSetEx(0, OBJ_SMALL, OBJ_HIDE);
-	}
+static void nmiFun()
+{
 	//push oam data to screen
 	dmaCopyOAram((unsigned char *) &oamMemory,0,0x220);
 	snes_vblank_count++;
 }
 
 int main(void) {
-	static u16 x = 2<<5, y = 2<<5;
 
 	player1.x = 2<<4;
 	player1.y = 2<<5;
 	player1.health = 100;
 
 	player2.x = 2<<3;
-	player2.y = 2<<3;
+	player2.y = 2<<6;
 	player2.health = 100;
 
 	u8 players = 1;
@@ -67,36 +55,30 @@ int main(void) {
 
 	nmiSet(nmiFun);
 	REG_NMITIMEN = INT_VBLENABLE;
-	//setBrightness(0);
-	//WaitForVBlank();
-	//setBrightness(0xF);  // Screen with all brightness
-
 
 	Level_Load(1);//load level 0
 	DummySprites();
+
 	UpdateSprite(0, player1.x & 0xFF, player1.y & 0xFF);
-	UpdateSprite(1, x & 0xFF, y & 0xFF);
+	UpdateSprite(1, player2.x & 0xFF, player2.y & 0xFF);
 
 	//98-148 A-Z
 	//162-212 a-z
-	char pahello[8] = "(pjxx ^";
-	pahello[5] = 0x7E;
-	char stuffz[27] = "bdfhjlnprtvxzBDFHJLNPR\0";
+	//char pahello[8] = "(pjxx ^";
+	//pahello[5] = 0x7E;
+	//char stuffz[27] = "bdfhjlnprtvxzBDFHJLNPR\0";
 	//max capacity for u8 array 0xD4, max capacity for u6 0x6A
 
 	//stuffz[2] = fix_char('a');
 
-	bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
-	//bgSetScroll(BG_P2_HW_LAYER, x, y);
+	bgSetScroll(BG_LAYER_LEVEL, player1.x, player1.y);
 
 	//consoleDrawText(0, 1, stuffz);
 	//consoleDrawText(25, 27, pahello);
 
 	//setFadeEffect(2);
-
 	WaitForVBlank();
-	u8 fading = 0;
-	//setModeHdmaGradient(31);
+	//u8 fading = 0;
 	while(1) {
 
 		/*++fading;
@@ -144,8 +126,7 @@ int main(void) {
 			}
 
 			if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-				UpdateSprite(0, player1.x & 0xFF, player1.y & 0xFF);
-				//oamSet(0, (player1->x)&0xFF, (player1->y)&0xFF, 3, 0, 0, 0, 0);
+				UpdateSprite(0, player1.x, player1.y);
 				//consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
 			}
 
@@ -161,33 +142,30 @@ int main(void) {
 
 			if(pad1){
 				if(pad1 & KEY_RIGHT){
-					++x;
+					++player2.x;
 				}else if(pad1 & KEY_LEFT){
-					--x;
-					if(x < 1){
-						x = 1;
+					--player2.x;
+					if(player2.x < 1){
+						player2.x = 1;
 					}
 				}
 
 				if(pad1 & KEY_UP){
-					--y;
-					if(y < 1){
-						y = 1;
+					--player2.y;
+					if(player2.y < 1){
+						player2.y = 1;
 					}
 				}else if(pad1 & KEY_DOWN){
-					++y;
+					++player2.y;
 				}
 				if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-					UpdateSprite(1, x & 0xFF, y & 0xFF);
-					//oamSet(4, x&0xFF, y&0xFF, 3, 0, 0, 0, 0);
+					UpdateSprite(1, player2.x, player2.y);
 				}
 			}
 		}
 
-		//bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
-		//bgSetScroll(BG_P2_HW_LAYER, x, y);
+		//background positions updated here
 		customVBL();
-		//WaitForVBlank();
 	}
 	return 0;
 }

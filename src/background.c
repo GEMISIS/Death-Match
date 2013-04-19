@@ -10,17 +10,16 @@ static Level_s _currentLevel;
 #define LEVEL2_DATA &lvl2gfx, &lvl2gfx_end, &lvl2pal, &lvl2pal_end, &lvl2map, &lvl2map_end
 
 static void setLevel(char *gfx, char *gfxe,
-	char *pal, char *pale, char *map, char *mape, u8 tileMode)
+	char *pal, char *pale, char *map, char *mape, u16 tileMode)
 {
-	_currentLevel.map.gfx = gfx;
-	_currentLevel.map.gfxSize = (gfxe - gfx);
-	_currentLevel.map.pal = pal;
-	_currentLevel.map.palSize = (pale - pal);
-	_currentLevel.map.map = map;//lol
-	_currentLevel.map.mapSize = (mape - map);
-	_currentLevel.map.mapMode = tileMode;
+	_currentLevel.gfx = gfx;
+	_currentLevel.gfxSize = (gfxe - gfx);
+	_currentLevel.pal = pal;
+	_currentLevel.palSize = (pale - pal);
+	_currentLevel.map = map;
+	_currentLevel.mapSize = (mape - map);
+	_currentLevel.mapMode = tileMode;
 }
-
 
 
 //Draw a background at a given screen position for a players BGPos_s
@@ -34,18 +33,13 @@ void BG_Draw(/*player info*/)
 //each tile is 8x8 pixels, hence the >>3
 u16 BG_GetTile(u16 xPix, u16 yPix)
 {
-	Gfx_s *layer = &_currentLevel.map;
 	u16 lvlWd = (_currentLevel.width)>>3;
-	u16 *ptr = (u16 *) &layer->map + (yPix>>3)*lvlWd + (xPix>>3);
+	u16 *ptr = (u16 *) &_currentLevel.map + (yPix>>3)*lvlWd + (xPix>>3);
 	return (*ptr);
 }
 
-//Moving away from generic code to more optimized specifics.
-//Load a 16 color backgound on 2 hardware layers. Both bg's
-//share the same tile, pal, and map data, but can be scrolled
-//individually on their own hardware background layer.
+//Load a background to BG_LAYER_LEVEL
 static void levelToVram(void){
-	Gfx_s *lvlmap = &_currentLevel.map;
 
 	u16 palEntry = LEVEL_PAL_SLOT*BG_16COLORS;
 
@@ -53,33 +47,15 @@ static void levelToVram(void){
     WaitForVBlank();
 
     //copy tiles, palette and map to vram
-	dmaCopyVram(lvlmap->gfx, LEVEL_GFX_ADDR, lvlmap->gfxSize);
-	dmaCopyCGram(lvlmap->pal, palEntry, lvlmap->palSize);
+	dmaCopyVram(_currentLevel.gfx, LEVEL_GFX_ADDR, _currentLevel.gfxSize);
+	dmaCopyCGram(_currentLevel.pal, palEntry, _currentLevel.palSize);
 	//set gfx for both bg layers
-	bgSetGfxPtr(BG_P1_HW_LAYER, LEVEL_GFX_ADDR);
-	//bgSetGfxPtr(BG_P2_HW_LAYER, LEVEL_GFX_ADDR);
-
+	bgSetGfxPtr(BG_LAYER_LEVEL, LEVEL_GFX_ADDR);
 	WaitForVBlank();
-	dmaCopyVram(lvlmap->map, LEVEL_MAP_ADDR, lvlmap->mapSize);
-	//set map for both bg layers
-	bgSetMapPtr(BG_P1_HW_LAYER, LEVEL_MAP_ADDR, lvlmap->mapMode);
-	//bgSetMapPtr(BG_P2_HW_LAYER, LEVEL_MAP_ADDR, lvlmap->mapMode);
+	dmaCopyVram(_currentLevel.map, LEVEL_MAP_ADDR, _currentLevel.mapSize);
+	bgSetMapPtr(BG_LAYER_LEVEL, LEVEL_MAP_ADDR, _currentLevel.mapMode);
 }
-
-void windowClipTop(u16 left, u16 right){
-	REG_W12SEL = (1<<1) | (1<<0);
-    REG_WH0 = left;//2126 //left x position
-    REG_WH1 = right;//2127 //to right x position
-    REG_WOBJSEL = (1<<1) | (1<<0);
-	REG_WOBJLOG = 0;
-    REG_TMW = (1<<4) | (1<<0) ; //bg 1 enable
-}
-
-void windowDisable(void){
-	//REG_TMW = (1<<4) | (1<<0);
-	REG_WOBJSEL = (1<<1);
-}
-
+/*
 static void initSplitScreen(void){
 	//split screen with bg layers 1 and 2
 
@@ -148,18 +124,21 @@ static void initSplitScreen(void){
     		  (1<<1) | //bg 2 enable
     		  (1<<0) ; //bg 1 enable
 }
-
+*/
+static void loadText(void)
+{
+	//consoleInitText(BG_LAYER_TEXT, 2, &snesfont);
+	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
+}
 
 void Level_Load(u8 levelId)
 {
-	//consoleInitText(2, 2, &snesfont);
-
-	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
+	//load text to bg
+	loadText();
 
 	//set _currentLevel struct to the background we want to load
 	switch(levelId){
 		default:
-			//could probably create a macro to shorten some of this
 			setLevel(LEVEL1_DATA, SC_64x64);
 		break;
 		case 1:
@@ -170,9 +149,10 @@ void Level_Load(u8 levelId)
 	//load _currentLevel data to vram
 	levelToVram();
 
-	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH); //
-	bgSetDisable(1);bgSetDisable(2); bgSetDisable(3);
+	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH);
+
+	//remove garbage for now
+	bgSetDisable(0);bgSetDisable(2); bgSetDisable(3);
 
 	setBrightness(0xF);
-	//initSplitScreen();
 }
