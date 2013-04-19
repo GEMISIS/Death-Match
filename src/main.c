@@ -14,7 +14,34 @@
 
 static Player_s player1, player2;
 
+<<<<<<< HEAD
+extern windowDisable(void);
+extern void windowClipTop(u16 left, u16 right);
+
+u16 hideAll = 0;
+/**** Jumpy screen tearing at screen split
+***** Something in the nmi or customvbl code is messed up by joypad io, possibly the joypad enable flag,
+***** presumably because that's in the same register as nmi, hcount and vcount enable
+***** is non-maskable interrupt enabled? Check register $4200, write $80 to enable
+from superfamicom.org
+Notes: You should preserve most of your main registers in your NMI routine.
+Also, you really shouldn’t do anything not graphic-related, It’s a waste of precious time.
+VBLANK doesn’t last forever, so you only have ample time to do what you need to do.
+It’s still plenty of time though, believe me.
+
+Register $4210 is also of importance (I think):
+Register $4210: NMI Register
+x---vvvv:                       x: NMI V-BLANK flag
+								v: Version # ($5A22 (seems irrelevant???))
+Bit 7 can be reset to 0 by reading this register.
+When “1” is written to “NMI enable” of register $4200, bit 7 will show NMI status.
+Status is 0 for “NMI has not occurred” and 1 for “NMI has occurred”.
+ARM9 note: $4210 might be cleared by pvsneslib assembly or due to compiler on vblank: VBlank label in pvsneslib/source/crt0_snes.asm
+*/
+
+=======
 //Custom VBL for handling split screen with backgrounds
+>>>>>>> 9bd9e02250aaac0d8d513b859deb04bfd3a9b325
 static void customVBL()
 {
     unsigned int tt=snes_vblank_count;
@@ -50,7 +77,7 @@ int main(void) {
 
 	u8 players = 1;
 
-	consoleInit();
+	consoleInit(); //May want to modify this, sets screen brightness to 0xF at end, might cause blinking on real hardware
 
 
 	nmiSet(nmiFun);
