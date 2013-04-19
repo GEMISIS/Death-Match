@@ -66,6 +66,20 @@ static void levelToVram(void){
 	//bgSetMapPtr(BG_P2_HW_LAYER, LEVEL_MAP_ADDR, lvlmap->mapMode);
 }
 
+void windowClipTop(u16 left, u16 right){
+	REG_W12SEL = (1<<1) | (1<<0);
+    REG_WH0 = left;//2126 //left x position
+    REG_WH1 = right;//2127 //to right x position
+    REG_WOBJSEL = (1<<1) | (1<<0);
+	REG_WOBJLOG = 0;
+    REG_TMW = (1<<4) | (1<<0) ; //bg 1 enable
+}
+
+void windowDisable(void){
+	//REG_TMW = (1<<4) | (1<<0);
+	REG_WOBJSEL = (1<<1);
+}
+
 static void initSplitScreen(void){
 	//split screen with bg layers 1 and 2
 

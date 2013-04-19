@@ -15,20 +15,40 @@
 static Player_s player1;
 static Player_s player2;
 
+
+extern windowDisable(void);
+extern void windowClipTop(u16 left, u16 right);
+
+u16 hideAll = 0;
+
 static void customVBL()
 {
     unsigned int tt=snes_vblank_count;
     unsigned int count = 0;
 
-
+    hideAll = 0;
+    oamSetEx(0, OBJ_SMALL, OBJ_SHOW);
     bgSetScroll(BG_P1_HW_LAYER, player1.x, player1.y);
     while (tt == snes_vblank_count)
     {
     	if(++count == 231){
+    		hideAll = 1;
     		bgSetScroll(BG_P1_HW_LAYER, player2.x, player2.y);
     	}
     }
+
 }
+
+void nmiFun(){
+
+	if(hideAll){
+		oamSetEx(0, OBJ_SMALL, OBJ_HIDE);
+	}
+	//push oam data to screen
+	dmaCopyOAram((unsigned char *) &oamMemory,0,0x220);
+	snes_vblank_count++;
+}
+
 int main(void) {
 	static u16 x = 2<<5, y = 2<<5;
 
@@ -43,6 +63,14 @@ int main(void) {
 	u8 players = 1;
 
 	consoleInit();
+
+
+	nmiSet(nmiFun);
+	REG_NMITIMEN = INT_VBLENABLE;
+	//setBrightness(0);
+	//WaitForVBlank();
+	//setBrightness(0xF);  // Screen with all brightness
+
 
 	Level_Load(1);//load level 0
 	DummySprites();
