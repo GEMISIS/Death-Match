@@ -88,17 +88,21 @@ palibfont.pic: palibfont.bmp
 
 sprite.pic: sprite.bmp
 	@echo convert bitmap ... $(notdir $@)
-	$(GFXCONV) -gs8 -pc16 -po16 -pe2 -n $<
+	$(GFXCONV) -gs32 -pc16 -po16 -pe1 -n $<
+
+worldmap.pic: worldmap.pcx
+	@echo convert bitmap ... $(notdir $@)
+	$(GFXCONV) -gs16 -pc16 -po16 -pe2 -n -fpcx $<
 
 lvl1.pic: lvl1.bmp
 	@echo convert background ... $(notdir $@)
 	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fbmp -n $<
 
-lvl2.pic: lvl2.bmp
+lvl2.pic: lvl2.pcx
 	@echo convert background ... $(notdir $@)
-	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fbmp -n $<
+	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fpcx -n $<
 
-bitmaps : lvl1.pic lvl2.pic palibfont.pic sprite.pic
+bitmaps : lvl1.pic lvl2.pic palibfont.pic sprite.pic worldmap.pic
 
 #---------------------------------------------------------------------------------
 $(OUTPUT).sfc	: $(OFILES)

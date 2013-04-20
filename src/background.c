@@ -44,14 +44,14 @@ static void levelToVram(void){
 	u16 palEntry = LEVEL_PAL_SLOT*BG_16COLORS;
 
     setBrightness(0);  // Force VBlank Interrupt
-    WaitForVBlank();
+    //WaitForVBlank();
 
     //copy tiles, palette and map to vram
 	dmaCopyVram(_currentLevel.gfx, LEVEL_GFX_ADDR, _currentLevel.gfxSize);
 	dmaCopyCGram(_currentLevel.pal, palEntry, _currentLevel.palSize);
 	//set gfx for both bg layers
 	bgSetGfxPtr(BG_LAYER_LEVEL, LEVEL_GFX_ADDR);
-	WaitForVBlank();
+	//WaitForVBlank();
 	dmaCopyVram(_currentLevel.map, LEVEL_MAP_ADDR, _currentLevel.mapSize);
 	bgSetMapPtr(BG_LAYER_LEVEL, LEVEL_MAP_ADDR, _currentLevel.mapMode);
 }
@@ -152,7 +152,8 @@ void Level_Load(u8 levelId)
 	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH);
 
 	//remove garbage for now
-	bgSetDisable(0);bgSetDisable(2); bgSetDisable(3);
-
-	setBrightness(0xF);
+	bgSetDisable(0);
+	bgSetDisable(2);
+	bgSetDisable(3);
+	//setBrightness(0xF);don't set brightness to non-zero anywhere but in main for now
 }

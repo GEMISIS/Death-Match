@@ -41,6 +41,13 @@ spritegfx_end:
 spritepal:
 .incbin "sprite.pal"
 
+testgfx:
+.incbin "worldmap.pic"
+testgfx_end:
+
+testpal:
+.incbin "worldmap.pal"
+
 snesfont:
 .incbin "palibfont.pic"
 snesfont_end:

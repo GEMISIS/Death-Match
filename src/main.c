@@ -48,7 +48,7 @@ static void customVBL()
     while (tt == snes_vblank_count)
     {
     	if(++count == 231){//then update bottom
-    		bgSetScroll(BG_LAYER_LEVEL, player2.x, player2.y);
+    		bgSetScroll(BG_LAYER_LEVEL, player2.x, player2.y-108); //looks fine for now, but should be -112?
     	}
     }
 
@@ -63,27 +63,27 @@ static void nmiFun()
 
 int main(void) {
 
-	player1.x = 2<<4;
-	player1.y = 2<<5;
+	player1.x = 0;
+	player1.y = 48;
 	player1.health = 100;
 
-	player2.x = 2<<3;
-	player2.y = 2<<6;
+	player2.x = 16;
+	player2.y = 48;
 	player2.health = 100;
 
 	u8 players = 1;
 
 	consoleInit(); //May want to modify this, sets screen brightness to 0xF at end, might cause blinking on real hardware
-
-
+	RealtimeFade(0, 0);
 	nmiSet(nmiFun);
 	REG_NMITIMEN = INT_VBLENABLE;
 
 	Level_Load(1);//load level 0
 	DummySprites();
 
-	UpdateSprite(0, player1.x & 0xFF, player1.y & 0xFF);
-	UpdateSprite(1, player2.x & 0xFF, player2.y & 0xFF);
+	UpdateSprite(0, player1.x &0xFF, player1.y &0xFF);
+	UpdateSprite(1, player2.x &0xFF, player2.y &0xFF);
+	//UpdateSprite(2, 32, 96);
 
 	//98-148 A-Z
 	//162-212 a-z
@@ -101,13 +101,14 @@ int main(void) {
 
 	//setFadeEffect(2);
 	WaitForVBlank();
-	//u8 fading = 0;
-	while(1) {
+	u8 fading = 0;
 
-		/*++fading;
-		if(fading<60){
+	while(1) {
+	
+		if(fading<20){
 			RealtimeFade(1, 0xF);
-		}else if(fading<150){
+			++fading;
+		}/*else if(fading<150){
 			RealtimeFade(0, 0x8);
 		}else if(fading<180){
 			RealtimeFade(0, 0x2);
@@ -116,7 +117,7 @@ int main(void) {
 		}else{
 			RealtimeFade(0, 0x0);
 		}*/
-
+		
 		scanPads();
 
 		pad0 = padsCurrent(0);
@@ -149,7 +150,7 @@ int main(void) {
 			}
 
 			if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-				UpdateSprite(0, player1.x, player1.y);
+				UpdateSprite(0, (u8)player1.x, (u8)player1.y);
 				//consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
 			}
 
@@ -182,13 +183,13 @@ int main(void) {
 					++player2.y;
 				}
 				if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-					UpdateSprite(1, player2.x, player2.y);
+					UpdateSprite(1, (u8)player2.x, (u8)player2.y);
 				}
 			}
 		}
-
-		//background positions updated here
 		customVBL();
+		//background positions updated here
+		
 	}
 	return 0;
 }
