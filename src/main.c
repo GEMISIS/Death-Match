@@ -104,7 +104,7 @@ int main(void) {
 	u8 fading = 0;
 
 	while(1) {
-	
+
 		if(fading<20){
 			RealtimeFade(1, 0xF);
 			++fading;
@@ -117,7 +117,7 @@ int main(void) {
 		}else{
 			RealtimeFade(0, 0x0);
 		}*/
-		
+
 		scanPads();
 
 		pad0 = padsCurrent(0);
@@ -189,7 +189,7 @@ int main(void) {
 		}
 		customVBL();
 		//background positions updated here
-		
+
 	}
 	return 0;
 }

@@ -3,15 +3,15 @@
 .section ".rodata1" superfree
 
 lvl1gfx:
-.incbin "lvl1.pic"
+.incbin "resources/gfx/lvl1.pic"
 lvl1gfx_end:
 
 lvl1map:
-.incbin "lvl1.map"
+.incbin "resources/gfx/lvl1.map"
 lvl1map_end:
 
 lvl1pal:
-.incbin "lvl1.pal"
+.incbin "resources/gfx/lvl1.pal"
 lvl1pal_end:
 
 .ends
@@ -19,15 +19,15 @@ lvl1pal_end:
 .section ".rodata2" superfree
 
 lvl2gfx:
-.incbin "lvl2.pic"
+.incbin "resources/gfx/lvl2.pic"
 lvl2gfx_end:
 
 lvl2map:
-.incbin "lvl2.map"
+.incbin "resources/gfx/lvl2.map"
 lvl2map_end:
 
 lvl2pal:
-.incbin "lvl2.pal"
+.incbin "resources/gfx/lvl2.pal"
 lvl2pal_end:
 
 .ends
@@ -35,21 +35,21 @@ lvl2pal_end:
 .section ".rodata3"
 
 spritegfx:
-.incbin "sprite.pic"
+.incbin "resources/gfx/sprite.pic"
 spritegfx_end:
 
 spritepal:
-.incbin "sprite.pal"
+.incbin "resources/gfx/sprite.pal"
 
 testgfx:
-.incbin "worldmap.pic"
+.incbin "resources/gfx/worldmap.pic"
 testgfx_end:
 
 testpal:
-.incbin "worldmap.pal"
+.incbin "resources/gfx/worldmap.pal"
 
 snesfont:
-.incbin "palibfont.pic"
+.incbin "resources/gfx/palibfont.pic"
 snesfont_end:
 
 .ends

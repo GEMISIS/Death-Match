@@ -1,0 +1,47 @@
+#--------------------------------------------------------------------------------
+# --- gfx2snes options ---
+# -gp	Output in packed pixel format
+# -gs#	Size of image blocks in pixels (8|16|32|64) (should probably only use 8)
+# --- Map options ---
+# -m!	Exclude map from output
+# -m	Convert the whole picture
+# -m7	Convert the whole picture for mode 7 format
+# -mc	Generate collision map only
+# -mR!	No tile reduction (not advised)
+# --- Palette options ---
+# -p!	Exclude palette from output
+# -pc#	The number of colors (4|16|128|256)
+# -po#	The number of colors to output (0 to 256) to filename.pal
+# -pe#	The palette entry to add to map tiles (0 to 16), exclusive entry is not required
+# -pr	Rearrange palettes and preserve palette numbers in the tilemap
+# --- File options ---
+# -f[bmp|pcx|tga] convert a bmp or pcx file, test tga viability?
+# --- Misc options ---
+# -n	No border, not quite sure what this does but might as well use it for now
+# -q	Quiet mode (no console output I presume, don't git push with this flag)
+
+GFXFOLDER := resources/gfx
+
+palibfont.pic: $(GFXFOLDER)/palibfont.bmp
+	@echo convert font with no tile reduction ... $(notdir $@)
+	$(GFXCONV) -gs8 -m! -mR! -p! -pc4 -po2 -pe0 -n $<
+
+sprite.pic: $(GFXFOLDER)/sprite.bmp
+	@echo convert bitmap ... $(notdir $@)
+	$(GFXCONV) -gs32 -pc16 -po16 -pe1 -n $<
+
+worldmap.pic: $(GFXFOLDER)/worldmap.pcx
+	@echo convert bitmap ... $(notdir $@)
+	$(GFXCONV) -gs16 -pc16 -po16 -pe2 -n -fpcx $<
+
+lvl1.pic: $(GFXFOLDER)/lvl1.bmp
+	@echo convert background ... $(notdir $@)
+	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fbmp -n $<
+
+lvl2.pic: $(GFXFOLDER)/lvl2.pcx
+	@echo convert background ... $(notdir $@)
+	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fpcx -n $<
+
+bitmaps : lvl1.pic lvl2.pic palibfont.pic sprite.pic worldmap.pic
+
+#---------------------------------------------------------------------------------
