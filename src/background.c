@@ -127,7 +127,7 @@ static void initSplitScreen(void){
 */
 static void loadText(void)
 {
-	//consoleInitText(BG_LAYER_TEXT, 2, &snesfont);
+	//consoleInitText(BG_LAYER_TEXT, 1, &snesfont);
 	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
 }
 
@@ -152,7 +152,8 @@ void Level_Load(u8 levelId)
 	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH);
 
 	//remove garbage for now
-	bgSetDisable(0);
+	bgSetDisable(BG_LAYER_TEXT);
+	//bgSetDisable(BG_LAYER_LEVEL);
 	bgSetDisable(2);
 	bgSetDisable(3);
 	//setBrightness(0xF);don't set brightness to non-zero anywhere but in main for now

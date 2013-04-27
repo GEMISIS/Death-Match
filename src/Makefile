@@ -62,8 +62,6 @@ clean:
 run:
 	$(DEVKITSNES)/emulators/higan/higan-performance.exe $(OUTPUT).sfc
 
-#set path to snesdev root and devkitsnes
-include $(CURDIR)/resources/dataFile
-
+include $(CURDIR)/resources/gfx/gfxmake
 
 $(OUTPUT).sfc	: $(OFILES)

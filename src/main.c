@@ -14,10 +14,6 @@
 
 static Player_s player1, player2;
 
-extern windowDisable(void);
-extern void windowClipTop(u16 left, u16 right);
-
-u16 hideAll = 0;
 /**** Jumpy screen tearing at screen split
 ***** Something in the nmi or customvbl code is messed up by joypad io, possibly the joypad enable flag,
 ***** presumably because that's in the same register as nmi, hcount and vcount enable
@@ -56,9 +52,18 @@ static void customVBL()
 
 static void nmiFun()
 {
+
+	consoleVblank();
 	//push oam data to screen
-	dmaCopyOAram((unsigned char *) &oamMemory,0,0x220);
-	snes_vblank_count++;
+	//dmaCopyOAram((unsigned char *) &oamMemory,0,0x220);
+
+    // if buffer need to be update, do it !
+    /*(if (pvsneslibdirty == 1) {
+            dmaCopyVram((unsigned char *) &pvsneslibfont_map, 0x800, 0x800);
+            pvsneslibdirty = 0;
+    }*/
+
+	//snes_vblank_count++;
 }
 
 int main(void) {
@@ -96,11 +101,11 @@ int main(void) {
 
 	bgSetScroll(BG_LAYER_LEVEL, player1.x, player1.y);
 
-	//consoleDrawText(0, 1, stuffz);
+	consoleDrawText(0, 1, "text");
 	//consoleDrawText(25, 27, pahello);
 
 	//setFadeEffect(2);
-	WaitForVBlank();
+	//WaitForVBlank();
 	u8 fading = 0;
 
 	while(1) {

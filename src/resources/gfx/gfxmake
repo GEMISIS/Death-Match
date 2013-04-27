@@ -22,26 +22,34 @@
 
 GFXFOLDER := resources/gfx
 
-palibfont.pic: $(GFXFOLDER)/palibfont.bmp
+gfx:
+#palibfont.pic:
 	@echo convert font with no tile reduction ... $(notdir $@)
-	$(GFXCONV) -gs8 -m! -mR! -p! -pc4 -po2 -pe0 -n $<
+	$(GFXCONV) -gs8 -m! -mR! -p! -pc4 -po2 -pe1 -n $(GFXFOLDER)/palibfont.bmp
 
-sprite.pic: $(GFXFOLDER)/sprite.bmp
+#sprite.pic:
 	@echo convert bitmap ... $(notdir $@)
-	$(GFXCONV) -gs32 -pc16 -po16 -pe1 -n $<
+	$(GFXCONV) -gs32 -pc16 -po16 -pe2 -n $(GFXFOLDER)/sprite.bmp
 
-worldmap.pic: $(GFXFOLDER)/worldmap.pcx
+#worldmap.pic: $(GFXFOLDER)/worldmap.pcx
 	@echo convert bitmap ... $(notdir $@)
-	$(GFXCONV) -gs16 -pc16 -po16 -pe2 -n -fpcx $<
+	$(GFXCONV) -gs16 -pc16 -po16 -pe3 -n -fpcx $(GFXFOLDER)/worldmap.pcx
 
-lvl1.pic: $(GFXFOLDER)/lvl1.bmp
+#lvl1.pic:
 	@echo convert background ... $(notdir $@)
-	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fbmp -n $<
+	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fbmp -n $(GFXFOLDER)/lvl1.bmp
 
-lvl2.pic: $(GFXFOLDER)/lvl2.pcx
+#lvl2.pic:
 	@echo convert background ... $(notdir $@)
-	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fpcx -n $<
+	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fpcx -n $(GFXFOLDER)/lvl2.pcx
 
-bitmaps : lvl1.pic lvl2.pic palibfont.pic sprite.pic worldmap.pic
+
+bitmaps : $(foreach dir,$(GFXFOLDER),$(notdir $(wildcard $( realpath $(dir)/*.pic))))
+
+
+cleangfx:
+	rm $(GFXFOLDER)/*.pal $(GFXFOLDER)/*.pic $(GFXFOLDER)/*.map
+
+#bitmaps : lvl1.pic lvl2.pic palibfont.pic sprite.pic worldmap.pic
 
 #---------------------------------------------------------------------------------
