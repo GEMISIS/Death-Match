@@ -5,6 +5,9 @@
 //reduces pointer usage too
 static Level_s _currentLevel;
 
+//size for a 32 x 32 map, or one screen full
+static u8 infoBarMap[0x400];
+
 
 #define LEVEL1_DATA &lvl1gfx, &lvl1gfx_end, &lvl1pal, &lvl1pal_end, &lvl1map, &lvl1map_end
 #define LEVEL2_DATA &lvl2gfx, &lvl2gfx_end, &lvl2pal, &lvl2pal_end, &lvl2map, &lvl2map_end
@@ -125,16 +128,39 @@ static void initSplitScreen(void){
     		  (1<<0) ; //bg 1 enable
 }
 */
-static void loadText(void)
+static void loadInfoBar(void)
 {
-	//consoleInitText(BG_LAYER_TEXT, 1, &snesfont);
-	//consoleSetTextCol(RGB15(26,2,2), RGB15(0,0,0));
+	u16 palEntry = BG_LAYER_TEXT*32 + DIVIDER_PAL_SLOT* BG_4COLORS;
+
+	dmaCopyVram((u8*)divgfx, DIVIDER_GFX_ADDR, (divgfx_end - divgfx));
+	dmaCopyCGram((u8*)divpal, palEntry, (divpal_end - divpal));
+	//set gfx for both bg layers
+	bgSetGfxPtr(BG_LAYER_TEXT, DIVIDER_GFX_ADDR);
+
+
+	//set up divider map
+	u8 x = 0, y = 0;
+	for (x = -1; x < 32; ++x)
+	{
+		for (y = -1; y < 32; ++y)
+		{
+			if (y > 14 && y < 18) {
+				infoBarMap[x + (y<<5)] = 1;
+			}
+			else{
+				infoBarMap[x + (y<<5)] = 0;
+			}
+		}
+	}
+
+	//copy new map to vram
+	dmaCopyVram(infoBarMap, DIVIDER_MAP_ADDR, 0x400);
+	bgSetMapPtr(BG_LAYER_TEXT, DIVIDER_MAP_ADDR, SC_32x32);
 }
 
 void Level_Load(u8 levelId)
 {
-	//load text to bg
-	loadText();
+
 
 	//set _currentLevel struct to the background we want to load
 	switch(levelId){
@@ -149,12 +175,18 @@ void Level_Load(u8 levelId)
 	//load _currentLevel data to vram
 	levelToVram();
 
+	WaitForVBlank();
+
+	//load text to bg
+	loadInfoBar();
+
 	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH);
+
 
 	//remove garbage for now
 	bgSetDisable(BG_LAYER_TEXT);
 	//bgSetDisable(BG_LAYER_LEVEL);
-	bgSetDisable(2);
+	bgSetDisable(0);
 	bgSetDisable(3);
 	//setBrightness(0xF);don't set brightness to non-zero anywhere but in main for now
 }

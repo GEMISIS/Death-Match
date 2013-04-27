@@ -84,7 +84,7 @@ int main(void) {
 	REG_NMITIMEN = INT_VBLENABLE;
 
 	Level_Load(1);//load level 0
-	DummySprites();
+	//DummySprites();
 
 	UpdateSprite(0, player1.x &0xFF, player1.y &0xFF);
 	UpdateSprite(1, player2.x &0xFF, player2.y &0xFF);
@@ -101,7 +101,7 @@ int main(void) {
 
 	bgSetScroll(BG_LAYER_LEVEL, player1.x, player1.y);
 
-	consoleDrawText(0, 1, "text");
+	//consoleDrawText(0, 1, "text");
 	//consoleDrawText(25, 27, pahello);
 
 	//setFadeEffect(2);

@@ -53,3 +53,15 @@ snesfont:
 snesfont_end:
 
 .ends
+
+.section ".rodata4"
+
+divgfx:
+.incbin "resources/gfx/dividerw.pic"
+divgfx_end:
+
+divpal:
+.incbin "resources/gfx/dividerw.pal"
+divpal_end:
+
+.ends

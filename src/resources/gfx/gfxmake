@@ -23,33 +23,31 @@
 GFXFOLDER := resources/gfx
 
 gfx:
-#palibfont.pic:
+
+#convert a font
 	@echo convert font with no tile reduction ... $(notdir $@)
 	$(GFXCONV) -gs8 -m! -mR! -p! -pc4 -po2 -pe1 -n $(GFXFOLDER)/palibfont.bmp
 
-#sprite.pic:
+#convert a sprite sheet
 	@echo convert bitmap ... $(notdir $@)
 	$(GFXCONV) -gs32 -pc16 -po16 -pe2 -n $(GFXFOLDER)/sprite.bmp
 
-#worldmap.pic: $(GFXFOLDER)/worldmap.pcx
+#convert world map.. i guess
 	@echo convert bitmap ... $(notdir $@)
 	$(GFXCONV) -gs16 -pc16 -po16 -pe3 -n -fpcx $(GFXFOLDER)/worldmap.pcx
 
-#lvl1.pic:
+#convert levels
 	@echo convert background ... $(notdir $@)
-	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fbmp -n $(GFXFOLDER)/lvl1.bmp
+	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fbmp -n $(GFXFOLDER)/lvl*.bmp
+	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fpcx -n $(GFXFOLDER)/lvl*.pcx
 
-#lvl2.pic:
-	@echo convert background ... $(notdir $@)
-	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fpcx -n $(GFXFOLDER)/lvl2.pcx
-
+#convert divider tiles
+	$(GFXCONV) -gs8 -m -pc4 -pe2 -pr -fpcx -n $(GFXFOLDER)/dividerw.pcx
 
 bitmaps : $(foreach dir,$(GFXFOLDER),$(notdir $(wildcard $( realpath $(dir)/*.pic))))
 
 
 cleangfx:
 	rm $(GFXFOLDER)/*.pal $(GFXFOLDER)/*.pic $(GFXFOLDER)/*.map
-
-#bitmaps : lvl1.pic lvl2.pic palibfont.pic sprite.pic worldmap.pic
 
 #---------------------------------------------------------------------------------

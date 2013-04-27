@@ -7,7 +7,7 @@
 
 //snes hardware layer the level will be drawn too
 #define BG_LAYER_LEVEL 1
-#define BG_LAYER_TEXT  0
+#define BG_LAYER_TEXT  2
 
 /*Background struct
 	An instance of this struct will be required for
@@ -18,5 +18,7 @@ typedef struct {
 	char *gfx, *pal, *map;
 	u16 gfxSize, palSize, mapSize;
 }Level_s;
+
+
 
 extern void Level_Load(u8 levelId);
