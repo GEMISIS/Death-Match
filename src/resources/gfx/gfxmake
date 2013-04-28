@@ -28,21 +28,21 @@ gfx:
 	@echo convert font with no tile reduction ... $(notdir $@)
 	$(GFXCONV) -gs8 -m! -mR! -p! -pc4 -po2 -pe1 -n $(GFXFOLDER)/palibfont.bmp
 
-#convert a sprite sheet
+#convert a sprite
 	@echo convert bitmap ... $(notdir $@)
 	$(GFXCONV) -gs32 -pc16 -po16 -pe2 -n $(GFXFOLDER)/sprite.bmp
 
-#convert world map.. i guess
+#convert a sprite sheet
 	@echo convert bitmap ... $(notdir $@)
-	$(GFXCONV) -gs16 -pc16 -po16 -pe3 -n -fpcx $(GFXFOLDER)/worldmap.pcx
+	$(GFXCONV) -gs16 -pc16 -po16 -pe3 -n -fpcx $(GFXFOLDER)/mapicons.pcx
 
 #convert levels
 	@echo convert background ... $(notdir $@)
-	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fbmp -n $(GFXFOLDER)/lvl*.bmp
-	$(GFXCONV) -gs8 -m -pc16 -pe0 -pr -fpcx -n $(GFXFOLDER)/lvl*.pcx
+	$(GFXCONV) -gs8 -m -pc16 -po16 -pe0 -pr -fbmp -n $(GFXFOLDER)/lvl*.bmp
+	$(GFXCONV) -gs8 -m -pc16 -po16 -pe0 -pr -fpcx -n $(GFXFOLDER)/lvl*.pcx
 
 #convert divider tiles
-	$(GFXCONV) -gs8 -m -pc4 -pe2 -pr -fpcx -n $(GFXFOLDER)/dividerw.pcx
+	$(GFXCONV) -gs8 -m -pc16 -po4 -pe1 -pr -fpcx -n $(GFXFOLDER)/dividerw.pcx
 
 bitmaps : $(foreach dir,$(GFXFOLDER),$(notdir $(wildcard $( realpath $(dir)/*.pic))))
 

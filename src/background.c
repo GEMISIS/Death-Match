@@ -6,7 +6,7 @@
 static Level_s _currentLevel;
 
 //size for a 32 x 32 map, or one screen full
-static u8 infoBarMap[0x400];
+static u8 infoBarMap[0x800];
 
 
 #define LEVEL1_DATA &lvl1gfx, &lvl1gfx_end, &lvl1pal, &lvl1pal_end, &lvl1map, &lvl1map_end
@@ -44,7 +44,7 @@ u16 BG_GetTile(u16 xPix, u16 yPix)
 //Load a background to BG_LAYER_LEVEL
 static void levelToVram(void){
 
-	u16 palEntry = LEVEL_PAL_SLOT*BG_16COLORS;
+	u16 palEntry = LEVEL_PAL_SLOT*0x10;
 
     setBrightness(0);  // Force VBlank Interrupt
     //WaitForVBlank();
@@ -130,31 +130,32 @@ static void initSplitScreen(void){
 */
 static void loadInfoBar(void)
 {
-	u16 palEntry = BG_LAYER_TEXT*32 + DIVIDER_PAL_SLOT* BG_4COLORS;
+	//u16 palEntry = (BG_LAYER_TEXT<<5) + DIVIDER_PAL_SLOT* BG_4COLORS;
+	u16 palEntry = (DIVIDER_PAL_SLOT<<4);
+	setBrightness(0);
 
-	dmaCopyVram((u8*)divgfx, DIVIDER_GFX_ADDR, (divgfx_end - divgfx));
-	dmaCopyCGram((u8*)divpal, palEntry, (divpal_end - divpal));
+	dmaCopyVram(&divgfx, DIVIDER_GFX_ADDR, (&divgfx_end - &divgfx));
+	dmaCopyCGram(&divpal, palEntry, (4<<1));//(&divpal_end - &divpal));
 	//set gfx for both bg layers
 	bgSetGfxPtr(BG_LAYER_TEXT, DIVIDER_GFX_ADDR);
 
-
 	//set up divider map
 	u8 x = 0, y = 0;
-	for (x = -1; x < 32; ++x)
+	for (y = 0; y < 33; ++y)
 	{
-		for (y = -1; y < 32; ++y)
+		for (x = 0; x < 32; ++x)
 		{
-			if (y > 14 && y < 18) {
-				infoBarMap[x + (y<<5)] = 1;
+			if ((y-1 > 23) && (y-1 < 32)) {
+				infoBarMap[x + ((y-1)<<5)] = 7;//(7);//(base_location_bits << 13) + (8 * color_depth * character_number);
 			}
 			else{
-				infoBarMap[x + (y<<5)] = 0;
+				infoBarMap[x + ((y-1)<<5)] = 0;
 			}
 		}
 	}
 
 	//copy new map to vram
-	dmaCopyVram(infoBarMap, DIVIDER_MAP_ADDR, 0x400);
+	dmaCopyVram(infoBarMap, DIVIDER_MAP_ADDR, 0x800);
 	bgSetMapPtr(BG_LAYER_TEXT, DIVIDER_MAP_ADDR, SC_32x32);
 }
 
@@ -176,17 +177,19 @@ void Level_Load(u8 levelId)
 	levelToVram();
 
 	WaitForVBlank();
-
+	
 	//load text to bg
 	loadInfoBar();
 
-	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH);
-
+	//WaitForVBlank();
 
 	//remove garbage for now
-	bgSetDisable(BG_LAYER_TEXT);
+	//bgSetDisable(BG_LAYER_TEXT);
 	//bgSetDisable(BG_LAYER_LEVEL);
-	bgSetDisable(0);
+
+	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH);
+	bgSetDisable(2);
+	//bgSetDisable(2);
 	bgSetDisable(3);
 	//setBrightness(0xF);don't set brightness to non-zero anywhere but in main for now
 }

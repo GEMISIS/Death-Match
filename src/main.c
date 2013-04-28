@@ -44,10 +44,9 @@ static void customVBL()
     while (tt == snes_vblank_count)
     {
     	if(++count == 231){//then update bottom
-    		bgSetScroll(BG_LAYER_LEVEL, player2.x, player2.y-108); //looks fine for now, but should be -112?
+    		bgSetScroll(BG_LAYER_LEVEL, player2.x, player2.y-127); // offset depending on divider size
     	}
     }
-
 }
 
 static void nmiFun()
@@ -58,7 +57,7 @@ static void nmiFun()
 	//dmaCopyOAram((unsigned char *) &oamMemory,0,0x220);
 
     // if buffer need to be update, do it !
-    /*(if (pvsneslibdirty == 1) {
+    /*if (pvsneslibdirty == 1) {
             dmaCopyVram((unsigned char *) &pvsneslibfont_map, 0x800, 0x800);
             pvsneslibdirty = 0;
     }*/
@@ -76,18 +75,19 @@ int main(void) {
 	player2.y = 48;
 	player2.health = 100;
 
-	u8 players = 1;
+	static u8 players = 1;
 
-	consoleInit(); //May want to modify this, sets screen brightness to 0xF at end, might cause blinking on real hardware
-	RealtimeFade(0, 0);
+	consoleInit();
+
 	nmiSet(nmiFun);
 	REG_NMITIMEN = INT_VBLENABLE;
-
-	Level_Load(1);//load level 0
+	
+	Level_Load(0);//load level 0
+	//sprites working again
 	//DummySprites();
 
-	UpdateSprite(0, player1.x &0xFF, player1.y &0xFF);
-	UpdateSprite(1, player2.x &0xFF, player2.y &0xFF);
+	//UpdateSprite(0, player1.x &0xFF, player1.y &0xFF);
+	//UpdateSprite(1, player2.x &0xFF, player2.y &0xFF);
 	//UpdateSprite(2, 32, 96);
 
 	//98-148 A-Z
@@ -99,13 +99,8 @@ int main(void) {
 
 	//stuffz[2] = fix_char('a');
 
-	bgSetScroll(BG_LAYER_LEVEL, player1.x, player1.y);
-
-	//consoleDrawText(0, 1, "text");
-	//consoleDrawText(25, 27, pahello);
-
-	//setFadeEffect(2);
-	//WaitForVBlank();
+	//bgSetScroll(BG_LAYER_LEVEL, player1.x, player1.y);
+	
 	u8 fading = 0;
 
 	while(1) {
@@ -130,33 +125,29 @@ int main(void) {
 		if(pad0){
 
 			if(pad0 & (KEY_A | KEY_X)){
-				player1.health < 254 ? ++player1.health : player1.health = 255;
+				player1.health < 255 ? ++player1.health : player1.health = 255;
 			}else if(pad0 & (KEY_B | KEY_Y)){
 				player1.health > 0 ? --player1.health : player1.health = 0;
 			}
 
 			if(pad0 & KEY_RIGHT){
 				++player1.x;
-
 			}else if(pad0 & KEY_LEFT){
-				--player1.x;
-				if(player1.x < 1){
-					player1.x = 1;
+				if((player1.x < 1)==false){ // not using ! because of compiler bugs
+					--player1.x;
 				}
 			}
 
 			if(pad0 & KEY_UP){
-				--player1.y;
-				if(player1.y < 1){
-					player1.y = 1;
+				if((player1.y < 1)==false){
+					--player1.y;
 				}
 			}else if(pad0 & KEY_DOWN){
 				++player1.y;
 			}
 
 			if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-				UpdateSprite(0, (u8)player1.x, (u8)player1.y);
-				//consoleDrawText(1, 26, "X = %d Y = %d ", player1->x, player1->y);
+				//UpdateSprite(0, (u8)player1.x, (u8)player1.y);
 			}
 
 			if(pad0 & KEY_R){
@@ -173,22 +164,20 @@ int main(void) {
 				if(pad1 & KEY_RIGHT){
 					++player2.x;
 				}else if(pad1 & KEY_LEFT){
-					--player2.x;
-					if(player2.x < 1){
-						player2.x = 1;
+					if((player2.x < 1)==false){
+						--player2.x;
 					}
 				}
 
 				if(pad1 & KEY_UP){
-					--player2.y;
-					if(player2.y < 1){
-						player2.y = 1;
+					if((player2.y < 1==false)){
+						--player2.y;
 					}
 				}else if(pad1 & KEY_DOWN){
 					++player2.y;
 				}
 				if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-					UpdateSprite(1, (u8)player2.x, (u8)player2.y);
+					//UpdateSprite(1, (u8)player2.x, (u8)player2.y);
 				}
 			}
 		}

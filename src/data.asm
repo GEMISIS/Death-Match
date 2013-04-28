@@ -32,7 +32,7 @@ lvl2pal_end:
 
 .ends
 
-.section ".rodata3"
+.section ".rodata3" superfree
 
 spritegfx:
 .incbin "resources/gfx/sprite.pic"
@@ -42,11 +42,11 @@ spritepal:
 .incbin "resources/gfx/sprite.pal"
 
 testgfx:
-.incbin "resources/gfx/worldmap.pic"
+.incbin "resources/gfx/mapicons.pic"
 testgfx_end:
 
 testpal:
-.incbin "resources/gfx/worldmap.pal"
+.incbin "resources/gfx/mapicons.pal"
 
 snesfont:
 .incbin "resources/gfx/palibfont.pic"
@@ -54,7 +54,7 @@ snesfont_end:
 
 .ends
 
-.section ".rodata4"
+.section ".rodata4" superfree
 
 divgfx:
 .incbin "resources/gfx/dividerw.pic"
@@ -62,6 +62,6 @@ divgfx_end:
 
 divpal:
 .incbin "resources/gfx/dividerw.pal"
-divpal_end:
+;divpal_end:
 
 .ends

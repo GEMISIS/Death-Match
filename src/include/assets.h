@@ -13,4 +13,4 @@ extern char snesfont, snesfont_end;
 
 extern char lvl2gfx, lvl2gfx_end, lvl2pal, lvl2pal_end, lvl2map, lvl2map_end;
 
-extern char divgfx, divgfx_end, divpal, divpal_end;
+extern char divgfx, divgfx_end, divpal;// divpal_end;
