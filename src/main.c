@@ -81,8 +81,8 @@ int main(void) {
 
 	nmiSet(nmiFun);
 	REG_NMITIMEN = INT_VBLENABLE;
-	
-	Level_Load(0);//load level 0
+
+	Level_Load(1);//load level 0
 	//sprites working again
 	//DummySprites();
 
@@ -100,7 +100,7 @@ int main(void) {
 	//stuffz[2] = fix_char('a');
 
 	//bgSetScroll(BG_LAYER_LEVEL, player1.x, player1.y);
-	
+
 	u8 fading = 0;
 
 	while(1) {

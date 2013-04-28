@@ -128,6 +128,8 @@ static void initSplitScreen(void){
     		  (1<<0) ; //bg 1 enable
 }
 */
+
+
 static void loadInfoBar(void)
 {
 	//u16 palEntry = (BG_LAYER_TEXT<<5) + DIVIDER_PAL_SLOT* BG_4COLORS;
@@ -140,20 +142,41 @@ static void loadInfoBar(void)
 	bgSetGfxPtr(BG_LAYER_TEXT, DIVIDER_GFX_ADDR);
 
 	//set up divider map
+
+	//tile format: vhopppcc cccccccc
+	//vflip		(1<<15)
+	//hflip		(1<<14)
+	//priority  (1<<13)
+	//pal4		(1<<12)
+	//pal2		(1<<11)
+	//pal1		(1<<10)
+
+	//td512		(1<<9)
+	//td256		(1<<8)
+	//td128		(1<<7)
+	//td64		(1<<6)
+	//td32		(1<<5)
+	//td16		(1<<4)
+	//td8		(1<<3)
+	//td4 		(1<<2)
+	//td2 		(1<<1)
+	//td1 		(1<<0)
+
+	u16 *mapPtr = (u16*)&infoBarMap[0];
 	u8 x = 0, y = 0;
-	for (y = 0; y < 33; ++y)
+	for (y = 0; y < 32; ++y)
 	{
 		for (x = 0; x < 32; ++x)
 		{
-			if ((y-1 > 23) && (y-1 < 32)) {
-				infoBarMap[x + ((y-1)<<5)] = 7;//(7);//(base_location_bits << 13) + (8 * color_depth * character_number);
+			if ((y-1 > 14) && (y-1 < 18)) {
+				//infoBarMap[x + ((y-1)<<5)] = 7;//(7);//(base_location_bits << 13) + (8 * color_depth * character_number);
+				mapPtr[x + ((y-1)<<5)] = (1<<10) | (1<<13);
 			}
-			else{
-				infoBarMap[x + ((y-1)<<5)] = 0;
-			}
+			//else{
+			//	mapPtr[x + ((y-1)<<5)] = 0 | (1<<10);
+			//}
 		}
 	}
-
 	//copy new map to vram
 	dmaCopyVram(infoBarMap, DIVIDER_MAP_ADDR, 0x800);
 	bgSetMapPtr(BG_LAYER_TEXT, DIVIDER_MAP_ADDR, SC_32x32);
@@ -177,7 +200,7 @@ void Level_Load(u8 levelId)
 	levelToVram();
 
 	WaitForVBlank();
-	
+
 	//load text to bg
 	loadInfoBar();
 
