@@ -44,7 +44,7 @@ u16 BG_GetTile(u16 xPix, u16 yPix)
 //Load a background to BG_LAYER_LEVEL
 static void levelToVram(void){
 
-	u16 palEntry = LEVEL_PAL_SLOT*0x10;
+	u16 palEntry = (LEVEL_PAL_SLOT<<4);
 
     setBrightness(0);  // Force VBlank Interrupt
     //WaitForVBlank();
@@ -128,8 +128,6 @@ static void initSplitScreen(void){
     		  (1<<0) ; //bg 1 enable
 }
 */
-
-
 static void loadInfoBar(void)
 {
 	//u16 palEntry = (BG_LAYER_TEXT<<5) + DIVIDER_PAL_SLOT* BG_4COLORS;
@@ -142,7 +140,6 @@ static void loadInfoBar(void)
 	bgSetGfxPtr(BG_LAYER_TEXT, DIVIDER_GFX_ADDR);
 
 	//set up divider map
-
 	//tile format: vhopppcc cccccccc
 	//vflip		(1<<15)
 	//hflip		(1<<14)
@@ -168,15 +165,33 @@ static void loadInfoBar(void)
 	{
 		for (x = 0; x < 32; ++x)
 		{
-			if ((y-1 > 14) && (y-1 < 18)) {
+			if ((y-1 > 11) && (y-1 < 16)) {
 				//infoBarMap[x + ((y-1)<<5)] = 7;//(7);//(base_location_bits << 13) + (8 * color_depth * character_number);
-				mapPtr[x + ((y-1)<<5)] = (1<<10) | (1<<13);
+				mapPtr[x + ((y-1)<<5)] = (1<<13) | (1<<10) | ((DIVIDER_GFX_ADDR-DIVIDER_MAP_ADDR)>>4) + (1);
 			}
+			/*else if (y-1 > 26){
+				mapPtr[x + ((y-1)<<5)] = (1<<13) | (1<<10) | ((DIVIDER_GFX_ADDR-DIVIDER_MAP_ADDR)>>4) + (3);
+			}*/
 			//else{
-			//	mapPtr[x + ((y-1)<<5)] = 0 | (1<<10);
+			//	mapPtr[x + ((y-1)<<5)] = 0x0000;// | (1<<10);
 			//}
 		}
 	}
+	/*for (y = 0; y < 64; ++y)
+	{
+		for (x = 0; x < 64; ++x)
+		{
+			if ((y-1 > 23) && (y-1 < 32)) {
+				infoBarMap[x + ((y-1)<<5)] = 0x27;//(7);//(base_location_bits << 13) + (8 * color_depth * character_number);
+			}
+			else if(y-1 > 62){
+				infoBarMap[x + ((y-1)<<5)] = 0x27;
+			}else{
+				infoBarMap[x + ((y-1)<<5)] = 0;
+			}
+		}
+	}*/
+
 	//copy new map to vram
 	dmaCopyVram(infoBarMap, DIVIDER_MAP_ADDR, 0x800);
 	bgSetMapPtr(BG_LAYER_TEXT, DIVIDER_MAP_ADDR, SC_32x32);
@@ -195,20 +210,14 @@ void Level_Load(u8 levelId)
 			setLevel(LEVEL2_DATA, SC_64x64);
 		break;
 	}
-
+	
+	
 	//load _currentLevel data to vram
 	levelToVram();
-
 	WaitForVBlank();
 
-	//load text to bg
 	loadInfoBar();
-
-	//WaitForVBlank();
-
-	//remove garbage for now
-	//bgSetDisable(BG_LAYER_TEXT);
-	//bgSetDisable(BG_LAYER_LEVEL);
+	WaitForVBlank();
 
 	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH);
 	bgSetDisable(2);
