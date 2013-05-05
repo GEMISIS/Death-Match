@@ -72,7 +72,7 @@ void DummySprites()
 {
 	setBrightness(0);
 	setSpriteData(0, TEMP_SPRITE1_PAL_ID, 2, &Link, &testgfx, &testgfx_end, &testpal);
-	dmaCopyCGram(&spritepal, 128+1*16, (16<<1)); //2 bytes per color.
+	dmaCopyCGram(&spritepal, 128+(1<<4), (16<<1)); //16 colors per palette, 2 bytes per color.
 	oamInitGfxSet(Link.gfx, Link.gfxSize, Link.pal, Link.palId, SPRITE1_ADDR_OFFSET + (Link.gfxId), OBJ_SIZE16);
 	
 	u8 i, x = 0, y = 0;
@@ -81,6 +81,7 @@ void DummySprites()
 		if(((i-1)&0xF) == 0){
 			++y;
 		}
+		//Link.priority = (i-1)&3;
 		Link.gfxId = (i-1);
 		Link.palId = y&x&1;//;(i-1)&1;
 		Link.x = (x<<4);

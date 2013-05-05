@@ -79,15 +79,15 @@ int main(void) {
 
 	consoleInit();
 
-	nmiSet(nmiFun);
-	REG_NMITIMEN = INT_VBLENABLE;
+	//nmiSet(nmiFun);
+	//REG_NMITIMEN = INT_VBLENABLE;
 	
 	Level_Load(1);//load level 0
 	//sprites working again
-	//DummySprites();
+	DummySprites();
 
-	//UpdateSprite(0, player1.x &0xFF, player1.y &0xFF);
-	//UpdateSprite(1, player2.x &0xFF, player2.y &0xFF);
+	UpdateSprite(0, player1.x &0xFF, player1.y &0xFF);
+	UpdateSprite(1, player2.x &0xFF, player2.y &0xFF);
 	//UpdateSprite(2, 32, 96);
 
 	//98-148 A-Z
@@ -102,8 +102,12 @@ int main(void) {
 	//bgSetScroll(BG_LAYER_LEVEL, player1.x, player1.y);
 	
 	u8 fading = 0;
-
+	static u8 f;
 	while(1) {
+		
+		/*for(f = 0; f < 128; ++f){
+				UpdateSprite(f, f, f);
+			}*/
 
 		if(fading<20){
 			RealtimeFade(1, 0xF);
@@ -121,9 +125,10 @@ int main(void) {
 		scanPads();
 
 		pad0 = padsCurrent(0);
-
+		
 		if(pad0){
 
+			
 			if(pad0 & (KEY_A | KEY_X)){
 				player1.health < 255 ? ++player1.health : player1.health = 255;
 			}else if(pad0 & (KEY_B | KEY_Y)){
@@ -147,7 +152,7 @@ int main(void) {
 			}
 
 			if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-				//UpdateSprite(0, (u8)player1.x, (u8)player1.y);
+				UpdateSprite(0, (u8)player1.x, (u8)player1.y);
 			}
 
 			if(pad0 & KEY_R){
@@ -177,7 +182,7 @@ int main(void) {
 					++player2.y;
 				}
 				if((pad0 & KEY_UP|KEY_DOWN) || (pad0 & KEY_RIGHT|KEY_LEFT)){
-					//UpdateSprite(1, (u8)player2.x, (u8)player2.y);
+					UpdateSprite(1, (u8)player2.x, (u8)player2.y);
 				}
 			}
 		}

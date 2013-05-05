@@ -131,16 +131,16 @@ static void initSplitScreen(void){
 static void loadInfoBar(void)
 {
 	//u16 palEntry = (BG_LAYER_TEXT<<5) + DIVIDER_PAL_SLOT* BG_4COLORS;
-	u16 palEntry = (DIVIDER_PAL_SLOT<<4);
+	u16 palEntry = (DIVIDER_PAL_SLOT<<2); // <<2 4 colors per palette, <<4 16 colors per palette
 	setBrightness(0);
 
 	dmaCopyVram(&divgfx, DIVIDER_GFX_ADDR, (&divgfx_end - &divgfx));
 	dmaCopyCGram(&divpal, palEntry, (4<<1));//(&divpal_end - &divpal));
 	//set gfx for both bg layers
 	bgSetGfxPtr(BG_LAYER_TEXT, DIVIDER_GFX_ADDR);
-
-	//set up divider map
-	//tile format: vhopppcc cccccccc
+	
+	//
+	//tile format: vhop ppcc cccc cccc
 	//vflip		(1<<15)
 	//hflip		(1<<14)
 	//priority  (1<<13)
@@ -159,22 +159,27 @@ static void loadInfoBar(void)
 	//td2 		(1<<1)
 	//td1 		(1<<0)
 
+	// tilemap range = 0x3FF, 0x400 would overflow into palette attribute,
+	// entries in vram are 2bpp, 2 entries are used to represent 4bpp
+	// 
+	u16 offsetGfx4k = ((DIVIDER_GFX_ADDR - DIVIDER_MAP_ADDR) >> 3);
+	// shift right by 3 because 2bpp on bg3, shift by 4 for 4bpp offset
+
 	u16 *mapPtr = (u16*)&infoBarMap[0];
 	u8 x = 0, y = 0;
 	for (y = 0; y < 32; ++y)
 	{
 		for (x = 0; x < 32; ++x)
 		{
-			if ((y-1 > 11) && (y-1 < 16)) {
-				//infoBarMap[x + ((y-1)<<5)] = 7;//(7);//(base_location_bits << 13) + (8 * color_depth * character_number);
-				mapPtr[x + ((y-1)<<5)] = (1<<13) | (1<<10) | ((DIVIDER_GFX_ADDR-DIVIDER_MAP_ADDR)>>4) + (1);
+			if ((y > 11) && (y < 16)) {
+				mapPtr[x + ((y)<<5)] = (1<<13) | (DIVIDER_PAL_SLOT<<10) | (offsetGfx4k+1); //
 			}
 			/*else if (y-1 > 26){
 				mapPtr[x + ((y-1)<<5)] = (1<<13) | (1<<10) | ((DIVIDER_GFX_ADDR-DIVIDER_MAP_ADDR)>>4) + (3);
 			}*/
-			//else{
-			//	mapPtr[x + ((y-1)<<5)] = 0x0000;// | (1<<10);
-			//}
+			else{
+				mapPtr[(x) + ((y)<<5)] = 0x1C00 | (offsetGfx4k);// fill empty spaces for fun
+			}
 		}
 	}
 	/*for (y = 0; y < 64; ++y)
@@ -219,8 +224,8 @@ void Level_Load(u8 levelId)
 	loadInfoBar();
 	WaitForVBlank();
 
-	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH);
-	bgSetDisable(2);
+	setMode(BG_MODE1, BG3_MODE1_PRORITY_HIGH);// BG3_MODE1_PRORITY_HIGH);//
+	bgSetDisable(0);
 	//bgSetDisable(2);
 	bgSetDisable(3);
 	//setBrightness(0xF);don't set brightness to non-zero anywhere but in main for now

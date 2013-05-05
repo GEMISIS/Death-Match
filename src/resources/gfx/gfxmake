@@ -1,7 +1,7 @@
 #--------------------------------------------------------------------------------
 # --- gfx2snes options ---
 # -gp	Output in packed pixel format
-# -gs#	Size of image blocks in pixels (8|16|32|64) (should probably only use 8)
+# -gs#	Size of image blocks in pixels (8|16|32|64)
 # --- Map options ---
 # -m!	Exclude map from output
 # -m	Convert the whole picture
@@ -12,10 +12,10 @@
 # -p!	Exclude palette from output
 # -pc#	The number of colors (4|16|128|256)
 # -po#	The number of colors to output (0 to 256) to filename.pal
-# -pe#	The palette entry to add to map tiles (0 to 16), exclusive entry is not required
+# -pe#	The palette entry to add to map tiles (0 to 16). Exclusive entry is not required, but picking the correct entry for bgs is necessary
 # -pr	Rearrange palettes and preserve palette numbers in the tilemap
 # --- File options ---
-# -f[bmp|pcx|tga] convert a bmp or pcx file, test tga viability?
+# -f[bmp|pcx|tga] convert a bmp or pcx file
 # --- Misc options ---
 # -n	No border, not quite sure what this does but might as well use it for now
 # -q	Quiet mode (no console output I presume, don't git push with this flag)
@@ -42,7 +42,7 @@ gfx:
 	$(GFXCONV) -gs8 -m -pc16 -po16 -pe0 -pr -fpcx -n $(GFXFOLDER)/lvl*.pcx
 
 #convert divider tiles
-	$(GFXCONV) -gs8 -m -pc16 -po4 -pe1 -pr -fpcx -n $(GFXFOLDER)/dividerw.pcx
+	$(GFXCONV) -gs8 -m! -pc4 -po4 -pe1 -pr -fpcx -n $(GFXFOLDER)/dividerw.pcx
 
 bitmaps : $(foreach dir,$(GFXFOLDER),$(notdir $(wildcard $( realpath $(dir)/*.pic))))
 

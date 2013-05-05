@@ -7,7 +7,7 @@
 
 //snes hardware layer the level will be drawn too
 #define BG_LAYER_LEVEL 1
-#define BG_LAYER_TEXT  0
+#define BG_LAYER_TEXT  2
 
 /*Background struct
 	An instance of this struct will be required for
